@@ -23,7 +23,7 @@ public class FileBasedPlanningRepository implements PlanningRepository {
 
         write(new File(versionDirectory, "planning.json"), planning);
         write(new File(versionDirectory, "message.json"), new Message(currentHead(planningDirectory).hash()));
-        write(new File(planningDirectory, "head.json"), new Head(versionHash, currentHead(planningDirectory).hash()));
+        write(new File(planningDirectory, "head.json"), new Head(versionHash));
     }
 
     private void write(File file, Object data) {
@@ -50,7 +50,7 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         try {
             return objectMapper.readValue(new File(directory, "head.json"), Head.class);
         } catch (IOException e) {
-            return new Head("", "");
+            return new Head("");
         }
     }
 
@@ -60,6 +60,12 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         Head head = currentHead(planningDirectory);
         File currentVersionDirectory = new File(planningDirectory, head.hash());
         File currentMessageFile = new File(currentVersionDirectory, "message.json");
-        write(new File(planningDirectory, "head.json"), head.undo());
+            Message currentMessage;
+        try {
+            currentMessage = objectMapper.readValue(currentMessageFile, Message.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        write(new File(planningDirectory, "head.json"), new Head(currentMessage.parent()));
     }
 }
