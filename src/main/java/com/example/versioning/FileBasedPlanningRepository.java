@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class FileBasedPlanningRepository implements PlanningRepository {
     private final File rootDirectory;
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public FileBasedPlanningRepository(File rootDirectory) {
         this.rootDirectory = rootDirectory;
