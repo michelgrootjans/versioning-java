@@ -7,7 +7,7 @@ public class FileBasedVersionedRepository implements VersionedRepository {
     }
 
     @Override
-    public <T> void createNewVersion(T t) {
+    public void createNewVersion(Object t) {
         
     }
 }
