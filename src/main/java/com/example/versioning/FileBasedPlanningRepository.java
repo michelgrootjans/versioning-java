@@ -22,6 +22,7 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         }
 
         String hash = UUID.randomUUID().toString();
+        Head previousHead = getHead(directory);
 
         write(new Head(hash), directory, "head.json");
         write(planning, directory, hash + ".json");
@@ -39,10 +40,18 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     public Planning find(String planningId) {
         File directory = new File(rootDirectory, planningId);
         try {
-            Head head = objectMapper.readValue(new File(directory, "head.json"), Head.class);
+            Head head = getHead(directory);
             return objectMapper.readValue(new File(directory, head.hash() + ".json"), Planning.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private Head getHead(File directory) {
+        try {
+            return objectMapper.readValue(new File(directory, "head.json"), Head.class);
+        } catch (IOException e) {
+            return new Head("");
         }
     }
 
