@@ -16,15 +16,14 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     }
 
     public void save(String id, Planning planning) {
-        File directory = new File(rootDirectory, id);
         String versionHash = UUID.randomUUID().toString();
-        File versionDirectory = new File(directory, versionHash);
+        File planningDirectory = new File(rootDirectory, id);
+        File versionDirectory = new File(planningDirectory, versionHash);
         versionDirectory.mkdirs();
-        Head parent = getHead(directory);
 
-        write(new File(versionDirectory, versionHash + ".json"), planning);
-        write(new File(directory, versionHash + ".json"), planning);
-        write(new File(directory, "head.json"), new Head(versionHash, parent.hash()));
+        write(new File(versionDirectory, "planning.json"), planning);
+        write(new File(versionDirectory, "message.json"), new Message(currentHead(planningDirectory).hash()));
+        write(new File(planningDirectory, "head.json"), new Head(versionHash, currentHead(planningDirectory).hash()));
     }
 
     private void write(File file, Object data) {
@@ -38,14 +37,16 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     public Planning find(String planningId) {
         File directory = new File(rootDirectory, planningId);
         try {
-            Head head = getHead(directory);
-            return objectMapper.readValue(new File(directory, head.hash() + ".json"), Planning.class);
+            Head head = currentHead(directory);
+            File versionDirectory = new File(directory, head.hash());
+            File planningFile = new File(versionDirectory, "planning.json");
+            return objectMapper.readValue(planningFile, Planning.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Head getHead(File directory) {
+    private Head currentHead(File directory) {
         try {
             return objectMapper.readValue(new File(directory, "head.json"), Head.class);
         } catch (IOException e) {
@@ -56,7 +57,7 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     @Override
     public void undo(String planningId) {
         File directory = new File(rootDirectory, planningId);
-        Head head = getHead(directory);
+        Head head = currentHead(directory);
         write(new File(directory, "head.json"), head.undo());
     }
 }
