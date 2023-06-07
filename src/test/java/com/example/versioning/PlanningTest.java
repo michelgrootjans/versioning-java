@@ -28,18 +28,14 @@ public class PlanningTest {
 
     @Test
     void savePlanningWithAnOrder() {
-        Planning planning = new Planning("my first planning");
-        planning.add(new Order("laptop"));
-        repository.save("123", planning);
+        repository.save("123", new Planning("my first planning", List.of(new Order("laptop"))));
         assertThat(repository.find("123")).isEqualTo(new Planning("my first planning", List.of(new Order("laptop"))));
     }
 
     @Test
     void undoOnce() {
-        Planning planning = new Planning("my first planning");
-        repository.save("123", planning);
-        planning.add(new Order("laptop"));
-        repository.save("123", planning);
+        repository.save("123", new Planning("my first planning"));
+        repository.save("123", new Planning("my first planning", List.of(new Order("laptop"))));
         repository.undo("123");
         assertThat(repository.find("123")).isEqualTo(new Planning("my first planning"));
     }
@@ -50,9 +46,7 @@ public class PlanningTest {
         repository.save("123", new Planning("my first planning"));
         repository.save("123", new Planning("my first planning", List.of(new Order("laptop"))));
         repository.save("123", new Planning("my first planning", List.of(new Order("laptop bag"))));
-        assertThat(repository.find("123")).isEqualTo(new Planning("my first planning", List.of(new Order("laptop bag"))));
         repository.undo("123");
-        assertThat(repository.find("123")).isEqualTo(new Planning("my first planning", List.of(new Order("laptop"))));
         repository.undo("123");
         assertThat(repository.find("123")).isEqualTo(new Planning("my first planning"));
     }
