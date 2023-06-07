@@ -20,9 +20,6 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     public void save(String id, Planning planning) {
         var repository = hub.buildRepository(id);
         repository.createNewVersion(planning);
-        File planningDirectory = new File(rootDirectory, id);
-        String versionHash = createNewVersion(planning, planningDirectory);
-        pointHeadTo(planningDirectory, versionHash);
     }
 
     private void pointHeadTo(File planningDirectory, String versionHash) {
