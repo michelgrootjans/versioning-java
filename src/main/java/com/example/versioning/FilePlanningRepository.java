@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class FilePlanningRepository implements PlanningRepository {
     private final File rootDirectory;
@@ -15,9 +13,9 @@ public class FilePlanningRepository implements PlanningRepository {
     }
 
     public void save(Planning planning) {
-        File directory = new File(rootDirectory, "123");
+        File directory = new File(rootDirectory, planning.id());
         if(!directory.exists()) directory.mkdirs();
-        File file = new File(directory, "car.json");
+        File file = new File(directory, "planning.json");
         try {
             new ObjectMapper().writeValue(file, planning);
         } catch (IOException e) {
@@ -26,8 +24,8 @@ public class FilePlanningRepository implements PlanningRepository {
     }
 
     public Planning read(String planningId) {
-        File directory = new File(rootDirectory, "123");
-        File file = new File(directory, "car.json");
+        File directory = new File(rootDirectory, planningId);
+        File file = new File(directory, "planning.json");
         try {
             return new ObjectMapper().readValue(file, Planning.class);
         } catch (IOException e) {
