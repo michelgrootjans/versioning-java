@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 
-public class FilePlanningRepository implements PlanningRepository {
+public class FileBasedPlanningRepository implements PlanningRepository {
     private final File rootDirectory;
 
-    public FilePlanningRepository(File rootDirectory) {
+    public FileBasedPlanningRepository(File rootDirectory) {
         this.rootDirectory = rootDirectory;
     }
 
