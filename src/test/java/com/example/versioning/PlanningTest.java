@@ -21,16 +21,23 @@ public class PlanningTest {
 
     @Test
     void saveEmptyPlanning() {
-        Planning planning = new Planning("123");
-        repository.save(planning);
-        assertThat(repository.read("123")).isEqualTo(new Planning("123"));
+        repository.save(new Planning("123"));
+        assertThat(repository.find("123")).isEqualTo(new Planning("123"));
     }
 
     @Test
     void savePlanningWithAnOrder() {
+        repository.save(new Planning("123", List.of(new Order("laptop"))));
+        assertThat(repository.find("123")).isEqualTo(new Planning("123", List.of(new Order("laptop"))));
+    }
+
+    @Test
+    void undoPlanningWithAnOrder() {
         Planning planning = new Planning("123");
+        repository.save(planning);
         planning.add(new Order("laptop"));
         repository.save(planning);
-        assertThat(repository.read("123")).isEqualTo(new Planning("123", List.of(new Order("laptop"))));
+        repository.undo("123");
+        assertThat(repository.find("123")).isEqualTo(new Planning("123"));
     }
 }
