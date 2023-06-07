@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
+import java.util.List;
 
 public class PlanningTest {
     @TempDir
@@ -21,8 +22,9 @@ public class PlanningTest {
     @Test
     void saveToWorkspace() {
         Planning planning = new Planning("123");
+        planning.add(new Order("laptop"));
 
         repository.save(planning);
-        assertThat(repository.read("123")).isEqualTo(new Planning("123"));
+        assertThat(repository.read("123")).isEqualTo(new Planning("123", List.of(new Order("laptop"))));
     }
 }
