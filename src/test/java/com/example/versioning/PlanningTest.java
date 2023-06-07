@@ -52,6 +52,7 @@ public class PlanningTest {
         planning.add(new Order("laptop"));
         repository.save("123", planning);
         planning.add(new Order("laptop bag"));
+        repository.save("123", planning);
         repository.undo("123");
         repository.undo("123");
         assertThat(repository.find("123")).isEqualTo(new Planning("my first planning"));
