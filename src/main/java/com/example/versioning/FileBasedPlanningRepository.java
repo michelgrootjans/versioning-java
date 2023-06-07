@@ -19,9 +19,10 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         File directory = new File(rootDirectory, id);
         String versionHash = UUID.randomUUID().toString();
         File versionDirectory = new File(directory, versionHash);
-        directory.mkdirs();
+        versionDirectory.mkdirs();
         Head parent = getHead(directory);
 
+        write(new File(versionDirectory, versionHash + ".json"), planning);
         write(new File(directory, versionHash + ".json"), planning);
         write(new File(directory, "head.json"), new Head(versionHash, parent.hash()));
     }
