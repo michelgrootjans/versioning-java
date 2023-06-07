@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 public class FileBasedPlanningRepository implements PlanningRepository {
     private final File rootDirectory;
@@ -11,16 +12,16 @@ public class FileBasedPlanningRepository implements PlanningRepository {
 
     public FileBasedPlanningRepository(File rootDirectory) {
         this.rootDirectory = rootDirectory;
-        objectMapper = new ObjectMapper();
+        this.objectMapper = new ObjectMapper();
     }
 
-    public void save(Planning planning) {
-        File directory = new File(rootDirectory, planning.id());
+    public void save(String id, Planning planning) {
+        File directory = new File(rootDirectory, id);
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
-        String hash = new MD5Hasher().getHash("blah");
+        String hash = UUID.randomUUID().toString();
 
         write(new Head(hash), directory, "head.json");
         write(planning, directory, hash + ".json");
@@ -38,10 +39,8 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     public Planning find(String planningId) {
         File directory = new File(rootDirectory, planningId);
         try {
-            File headFile = new File(directory, "head.json");
-            Head head = objectMapper.readValue(headFile, Head.class);
-            File planningFile = new File(directory, head.hash() + ".json");
-            return objectMapper.readValue(planningFile, Planning.class);
+            Head head = objectMapper.readValue(new File(directory, "head.json"), Head.class);
+            return objectMapper.readValue(new File(directory, head.hash() + ".json"), Planning.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -49,6 +48,7 @@ public class FileBasedPlanningRepository implements PlanningRepository {
 
     @Override
     public void undo(String planningId) {
-        save(new Planning("123"));
+        final Planning planning = new Planning("my first planning");
+        save("123", planning);
     }
 }

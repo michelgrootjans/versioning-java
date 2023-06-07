@@ -1,7 +1,7 @@
 package com.example.versioning;
 
 public interface PlanningRepository {
-    void save(Planning planning);
+    void save(String id, Planning planning);
 
     Planning find(String planningId);
 
