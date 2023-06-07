@@ -47,13 +47,12 @@ public class PlanningTest {
     @Test
     @Disabled
     void undoTwice() {
-        Planning planning = new Planning("my first planning");
-        repository.save("123", planning);
-        planning.add(new Order("laptop"));
-        repository.save("123", planning);
-        planning.add(new Order("laptop bag"));
-        repository.save("123", planning);
+        repository.save("123", new Planning("my first planning"));
+        repository.save("123", new Planning("my first planning", List.of(new Order("laptop"))));
+        repository.save("123", new Planning("my first planning", List.of(new Order("laptop bag"))));
+        assertThat(repository.find("123")).isEqualTo(new Planning("my first planning", List.of(new Order("laptop bag"))));
         repository.undo("123");
+        assertThat(repository.find("123")).isEqualTo(new Planning("my first planning", List.of(new Order("laptop"))));
         repository.undo("123");
         assertThat(repository.find("123")).isEqualTo(new Planning("my first planning"));
     }
