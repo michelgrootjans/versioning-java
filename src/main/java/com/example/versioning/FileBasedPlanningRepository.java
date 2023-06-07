@@ -18,22 +18,11 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     }
 
     public void save(String id, Planning planning) {
-        var repository = hub.buildRepository(id);
-        repository.createNewVersion(planning);
+        hub.buildRepository(id).createNewVersion(planning);
     }
 
     private void pointHeadTo(File planningDirectory, String versionHash) {
         write(new File(planningDirectory, "head.json"), new Head(versionHash));
-    }
-
-    private String createNewVersion(Planning planning, File planningDirectory) {
-        String versionHash = UUID.randomUUID().toString();
-        File versionDirectory = new File(planningDirectory, versionHash);
-        versionDirectory.mkdirs();
-
-        write(new File(versionDirectory, "planning.json"), planning);
-        write(new File(versionDirectory, "message.json"), new Message(currentHead(planningDirectory).hash()));
-        return versionHash;
     }
 
     private void write(File file, Object data) {
