@@ -20,10 +20,16 @@ public class PlanningTest {
     }
 
     @Test
-    void saveToWorkspace() {
+    void saveEmptyPlanning() {
+        Planning planning = new Planning("123");
+        repository.save(planning);
+        assertThat(repository.read("123")).isEqualTo(new Planning("123"));
+    }
+
+    @Test
+    void savePlanningWithAnOrder() {
         Planning planning = new Planning("123");
         planning.add(new Order("laptop"));
-
         repository.save(planning);
         assertThat(repository.read("123")).isEqualTo(new Planning("123", List.of(new Order("laptop"))));
     }
