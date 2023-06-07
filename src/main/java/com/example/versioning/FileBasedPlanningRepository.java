@@ -9,21 +9,32 @@ import java.util.UUID;
 public class FileBasedPlanningRepository implements PlanningRepository {
     private final File rootDirectory;
     private final ObjectMapper objectMapper;
+    private final VersionHub hub;
 
     public FileBasedPlanningRepository(File rootDirectory) {
         this.rootDirectory = rootDirectory;
         this.objectMapper = new ObjectMapper();
+        this.hub = new FileBasedVersionHub(rootDirectory);
     }
 
     public void save(String id, Planning planning) {
-        String versionHash = UUID.randomUUID().toString();
         File planningDirectory = new File(rootDirectory, id);
+        String versionHash = createNewVersion(planning, planningDirectory);
+        pointHeadTo(planningDirectory, versionHash);
+    }
+
+    private void pointHeadTo(File planningDirectory, String versionHash) {
+        write(new File(planningDirectory, "head.json"), new Head(versionHash));
+    }
+
+    private String createNewVersion(Planning planning, File planningDirectory) {
+        String versionHash = UUID.randomUUID().toString();
         File versionDirectory = new File(planningDirectory, versionHash);
         versionDirectory.mkdirs();
 
         write(new File(versionDirectory, "planning.json"), planning);
         write(new File(versionDirectory, "message.json"), new Message(currentHead(planningDirectory).hash()));
-        write(new File(planningDirectory, "head.json"), new Head(versionHash));
+        return versionHash;
     }
 
     private void write(File file, Object data) {
@@ -66,6 +77,6 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        write(new File(planningDirectory, "head.json"), new Head(currentMessage.parent()));
+        pointHeadTo(planningDirectory, currentMessage.parent());
     }
 }
