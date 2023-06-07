@@ -56,8 +56,10 @@ public class FileBasedPlanningRepository implements PlanningRepository {
 
     @Override
     public void undo(String planningId) {
-        File directory = new File(rootDirectory, planningId);
-        Head head = currentHead(directory);
-        write(new File(directory, "head.json"), head.undo());
+        File planningDirectory = new File(rootDirectory, planningId);
+        Head head = currentHead(planningDirectory);
+        File currentVersionDirectory = new File(planningDirectory, head.hash());
+        File currentMessageFile = new File(currentVersionDirectory, "message.json");
+        write(new File(planningDirectory, "head.json"), head.undo());
     }
 }
