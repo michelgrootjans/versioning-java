@@ -23,6 +23,6 @@ public class PlanningTest {
         Planning planning = new Planning("123");
 
         repository.save(planning);
-        assertThat(repository.read()).isEqualTo(new Planning("123"));
+        assertThat(repository.read("123")).isEqualTo(new Planning("123"));
     }
 }
