@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record Planning(String id, String name, List<Order> orders) {
-    public Planning(String name) {
-        this("123", name, new ArrayList<>());
+    public Planning(String id, String name) {
+        this(id, name, new ArrayList<>());
     }
 }
