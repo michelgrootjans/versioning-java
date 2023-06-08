@@ -24,6 +24,22 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         return hub.buildRepository(planningId).find(planningId);
     }
 
+    @Override
+    public void undo(String planningId) {
+        hub.buildRepository(planningId).undo();
+        File planningDirectory = new File(rootDirectory, planningId);
+        Head head = currentHead(planningDirectory);
+        File currentVersionDirectory = new File(planningDirectory, head.hash());
+        File currentMessageFile = new File(currentVersionDirectory, "message.json");
+        Message currentMessage;
+        try {
+            currentMessage = objectMapper.readValue(currentMessageFile, Message.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        pointHeadTo(planningDirectory, currentMessage.parent());
+    }
+
     private void pointHeadTo(File planningDirectory, String versionHash) {
         write(new File(planningDirectory, "head.json"), new Head(versionHash));
     }
@@ -42,20 +58,5 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         } catch (IOException e) {
             return new Head("");
         }
-    }
-
-    @Override
-    public void undo(String planningId) {
-        File planningDirectory = new File(rootDirectory, planningId);
-        Head head = currentHead(planningDirectory);
-        File currentVersionDirectory = new File(planningDirectory, head.hash());
-        File currentMessageFile = new File(currentVersionDirectory, "message.json");
-            Message currentMessage;
-        try {
-            currentMessage = objectMapper.readValue(currentMessageFile, Message.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        pointHeadTo(planningDirectory, currentMessage.parent());
     }
 }

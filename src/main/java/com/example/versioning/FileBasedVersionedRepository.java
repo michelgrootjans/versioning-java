@@ -33,6 +33,11 @@ public class FileBasedVersionedRepository implements VersionedRepository {
         }
     }
 
+    @Override
+    public void undo() {
+        
+    }
+
     private void pointHeadTo(String versionHash) {
         write(new File(rootDirectory, "head.json"), new Head(versionHash));
     }
