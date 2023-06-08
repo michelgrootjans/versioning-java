@@ -34,6 +34,7 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     }
 
     public Planning find(String planningId) {
+        hub.buildRepository(planningId);
         File directory = new File(rootDirectory, planningId);
         try {
             Head head = currentHead(directory);
