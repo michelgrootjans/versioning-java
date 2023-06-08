@@ -23,14 +23,14 @@ public class FileBasedVersionedRepository implements VersionedRepository {
 
     @Override
     public Planning find(String planningId) {
-            try {
-                Head head = currentHead(rootDirectory);
-                File versionDirectory = new File(rootDirectory, head.hash());
-                File planningFile = new File(versionDirectory, "planning.json");
-                return objectMapper.readValue(planningFile, Planning.class);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            Head head = currentHead(rootDirectory);
+            File versionDirectory = new File(rootDirectory, head.hash());
+            File planningFile = new File(versionDirectory, "planning.json");
+            return objectMapper.readValue(planningFile, Planning.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void pointHeadTo(String versionHash) {
@@ -46,7 +46,6 @@ public class FileBasedVersionedRepository implements VersionedRepository {
         write(new File(versionDirectory, "message.json"), new Message(currentHead(rootDirectory).hash()));
         return versionHash;
     }
-
 
     private Head currentHead(File directory) {
         try {
