@@ -35,7 +35,16 @@ public class FileBasedVersionedRepository implements VersionedRepository {
 
     @Override
     public void undo() {
-        
+        Head head = currentHead();
+        File currentVersionDirectory = new File(rootDirectory, head.hash());
+        File currentMessageFile = new File(currentVersionDirectory, "message.json");
+        Message currentMessage;
+        try {
+            currentMessage = objectMapper.readValue(currentMessageFile, Message.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        pointHeadTo(currentMessage.parent());
     }
 
     private void pointHeadTo(String versionHash) {
