@@ -12,7 +12,8 @@ import java.util.List;
 
 public class PlanningTest {
     @TempDir
-    File tempDir;
+    private File tempDir;
+    
     private PlanningRepository repository;
 
     @BeforeEach
