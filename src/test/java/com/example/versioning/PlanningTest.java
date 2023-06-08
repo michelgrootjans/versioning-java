@@ -3,7 +3,6 @@ package com.example.versioning;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -29,14 +28,14 @@ public class PlanningTest {
 
     @Test
     void savePlanningWithAnOrder() {
-        repository.save("123", new Planning("my first planning", List.of(new Order("laptop"))));
-        assertThat(repository.find("123")).isEqualTo(new Planning("my first planning", List.of(new Order("laptop"))));
+        repository.save("123", new Planning("123", "my first planning", List.of(new Order("laptop"))));
+        assertThat(repository.find("123")).isEqualTo(new Planning("123", "my first planning", List.of(new Order("laptop"))));
     }
 
     @Test
     void undoOnce() {
         repository.save("123", new Planning("my first planning"));
-        repository.save("123", new Planning("my first planning", List.of(new Order("laptop"))));
+        repository.save("123", new Planning("123", "my first planning", List.of(new Order("laptop"))));
         repository.undo("123");
         assertThat(repository.find("123")).isEqualTo(new Planning("my first planning"));
     }
@@ -44,8 +43,8 @@ public class PlanningTest {
     @Test
     void undoTwice() {
         repository.save("123", new Planning("my first planning"));
-        repository.save("123", new Planning("my first planning", List.of(new Order("laptop"))));
-        repository.save("123", new Planning("my first planning", List.of(new Order("laptop bag"))));
+        repository.save("123", new Planning("123", "my first planning", List.of(new Order("laptop"))));
+        repository.save("123", new Planning("123", "my first planning", List.of(new Order("laptop bag"))));
         repository.undo("123");
         repository.undo("123");
         assertThat(repository.find("123")).isEqualTo(new Planning("my first planning"));
