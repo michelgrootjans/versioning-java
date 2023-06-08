@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 public class FileBasedPlanningRepository implements PlanningRepository {
     private final File rootDirectory;
@@ -21,6 +20,10 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         hub.buildRepository(id).createNewVersion(planning);
     }
 
+    public Planning find(String planningId) {
+        return hub.buildRepository(planningId).find(planningId);
+    }
+
     private void pointHeadTo(File planningDirectory, String versionHash) {
         write(new File(planningDirectory, "head.json"), new Head(versionHash));
     }
@@ -28,19 +31,6 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     private void write(File file, Object data) {
         try {
             objectMapper.writeValue(file, data);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Planning find(String planningId) {
-        hub.buildRepository(planningId);
-        File directory = new File(rootDirectory, planningId);
-        try {
-            Head head = currentHead(directory);
-            File versionDirectory = new File(directory, head.hash());
-            File planningFile = new File(versionDirectory, "planning.json");
-            return objectMapper.readValue(planningFile, Planning.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

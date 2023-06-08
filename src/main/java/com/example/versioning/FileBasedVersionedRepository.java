@@ -21,6 +21,18 @@ public class FileBasedVersionedRepository implements VersionedRepository {
         pointHeadTo(versionHash);
     }
 
+    @Override
+    public Planning find(String planningId) {
+            try {
+                Head head = currentHead(rootDirectory);
+                File versionDirectory = new File(rootDirectory, head.hash());
+                File planningFile = new File(versionDirectory, "planning.json");
+                return objectMapper.readValue(planningFile, Planning.class);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+    }
+
     private void pointHeadTo(String versionHash) {
         write(new File(rootDirectory, "head.json"), new Head(versionHash));
     }
