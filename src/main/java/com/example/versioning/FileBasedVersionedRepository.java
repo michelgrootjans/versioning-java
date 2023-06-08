@@ -49,7 +49,7 @@ public class FileBasedVersionedRepository implements VersionedRepository {
 
     private Head currentHead(File directory) {
         try {
-            return objectMapper.readValue(new File(directory, "head.json"), Head.class);
+            return objectMapper.readValue(new File(rootDirectory, "head.json"), Head.class);
         } catch (IOException e) {
             return new Head("");
         }
