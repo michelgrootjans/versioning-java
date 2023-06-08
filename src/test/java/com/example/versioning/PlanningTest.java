@@ -13,7 +13,7 @@ import java.util.List;
 public class PlanningTest {
     @TempDir
     private File tempDir;
-    
+
     private PlanningRepository repository;
 
     @BeforeEach
@@ -42,7 +42,6 @@ public class PlanningTest {
     }
 
     @Test
-    @Disabled
     void undoTwice() {
         repository.save("123", new Planning("my first planning"));
         repository.save("123", new Planning("my first planning", List.of(new Order("laptop"))));
