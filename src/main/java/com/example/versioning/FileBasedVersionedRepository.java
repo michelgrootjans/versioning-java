@@ -16,14 +16,13 @@ public class FileBasedVersionedRepository implements VersionedRepository {
     }
 
     @Override
-    public void createNewVersion(Object t) {
-        String versionHash = createNewVersion2(t);
+    public void createNewVersion(Object target) {
+        String versionHash = createNewVersion2(target);
         pointHeadTo(versionHash);
     }
 
     private void pointHeadTo(String versionHash) {
         write(new File(rootDirectory, "head.json"), new Head(versionHash));
-
     }
 
     private String createNewVersion2(Object planning) {
