@@ -9,8 +9,8 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         this.hub = new FileBasedVersionHub(rootDirectory);
     }
 
-    public void save(String id, Planning planning) {
-        hub.buildRepository(id).createNewVersion(planning);
+    public void save(Planning planning) {
+        hub.buildRepository(planning.id()).createNewVersion(planning);
     }
 
     public Planning find(String planningId) {
