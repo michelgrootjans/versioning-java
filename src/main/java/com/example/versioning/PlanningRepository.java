@@ -12,7 +12,7 @@ public class PlanningRepository {
     }
 
     public Planning find(String planningId) {
-        return hub.buildRepository(planningId).find(planningId);
+        return hub.buildRepository(planningId).currentVersion();
     }
 
     public void undo(String planningId) {

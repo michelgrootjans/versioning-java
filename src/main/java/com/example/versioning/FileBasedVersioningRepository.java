@@ -9,10 +9,12 @@ import java.util.UUID;
 public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
     private final File rootDirectory;
     private final ObjectMapper objectMapper;
+    private final Class<Planning> targetType;
 
     public FileBasedVersioningRepository(File rootDirectory) {
         this.rootDirectory = rootDirectory;
         this.objectMapper = new ObjectMapper();
+        targetType = Planning.class;
     }
 
     @Override
@@ -22,15 +24,19 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     @Override
-    public Planning find(String planningId) {
+    public Planning currentVersion() {
         try {
             Head head = currentHead();
             File versionDirectory = new File(rootDirectory, head.hash());
-            File planningFile = new File(versionDirectory, "planning.json");
-            return objectMapper.readValue(planningFile, Planning.class);
+            File planningFile = new File(versionDirectory, targetName() + ".json");
+            return objectMapper.readValue(planningFile, targetType);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String targetName() {
+        return targetType.getSimpleName();
     }
 
     @Override
@@ -51,12 +57,12 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         write(new File(rootDirectory, "head.json"), new Head(versionHash));
     }
 
-    private String createNewVersion2(Object planning) {
+    private String createNewVersion2(T target) {
         String versionHash = UUID.randomUUID().toString();
         File versionDirectory = new File(rootDirectory, versionHash);
         versionDirectory.mkdirs();
 
-        write(new File(versionDirectory, "planning.json"), planning);
+        write(new File(versionDirectory, targetName() + ".json"), target);
         write(new File(versionDirectory, "message.json"), new Message(currentHead().hash()));
         return versionHash;
     }
