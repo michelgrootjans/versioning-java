@@ -11,4 +11,8 @@ public record UndoStack(Stack<String> hashes) {
         this.hashes.push(hash);
         return new UndoStack(hashes);
     }
+
+    public String pop() {
+        return hashes.pop();
+    }
 }

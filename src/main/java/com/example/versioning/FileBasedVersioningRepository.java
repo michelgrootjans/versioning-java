@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
@@ -38,13 +37,14 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     @Override
     public void redo() {
         String hash = getTopOfUndoStack();
+        pointHeadTo(hash);
         // point to that hash
-        Planning planning = new Planning("123", "my first planning", List.of(new Order("laptop")));
-        createNewVersion((T) planning);
+//        Planning planning = new Planning("123", "my first planning", List.of(new Order("laptop")));
+//        createNewVersion((T) planning);
     }
 
     private String getTopOfUndoStack() {
-        return null;
+        return currentUndo().pop();
     }
 
     private String currentHash() {
