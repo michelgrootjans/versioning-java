@@ -27,7 +27,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         try {
             Head head = currentHead();
             File versionDirectory = new File(rootDirectory, head.hash());
-            File targetFile = new File(versionDirectory, targetName() + ".json");
+            File targetFile = new File(versionDirectory, "target.json");
             return objectMapper.readValue(targetFile, targetType);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -61,7 +61,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         File versionDirectory = directoryOf(versionHash);
         versionDirectory.mkdirs();
 
-        write(new File(versionDirectory, targetName() + ".json"), target);
+        write(new File(versionDirectory, "target.json"), target);
         write(new File(versionDirectory, "message.json"), new Message(currentHead().hash()));
         return versionHash;
     }
@@ -72,7 +72,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     private Head currentHead() {
         try {
-            String fileName = "head.json";
             return objectMapper.readValue(rootFile("head.json"), Head.class);
         } catch (IOException e) {
             return new Head("");
