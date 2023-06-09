@@ -11,7 +11,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     private final Class<T> targetType;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public FileBasedVersioningRepository(File rootDirectory, Class<Planning> targetType) {
+    public FileBasedVersioningRepository(File rootDirectory, Class<T> targetType) {
         this.rootDirectory = rootDirectory;
         this.targetType = (Class<T>) targetType;
     }
