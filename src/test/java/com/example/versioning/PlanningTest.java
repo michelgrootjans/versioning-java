@@ -13,11 +13,11 @@ public class PlanningTest {
     @TempDir
     private File tempDir;
 
-    private FileBasedPlanningRepository repository;
+    private PlanningRepository repository;
 
     @BeforeEach
     void setUp() {
-        repository = new FileBasedPlanningRepository(new FileBasedVersioningFactory<Planning>(tempDir));
+        repository = new PlanningRepository(new FileBasedVersioningFactory<Planning>(tempDir));
     }
 
     @Test

@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-public class FileBasedVersioningRepository<T> implements VersioningRepository {
+public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
     private final File rootDirectory;
     private final ObjectMapper objectMapper;
 

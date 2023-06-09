@@ -10,7 +10,7 @@ public class FileBasedVersioningFactory<T> implements VersioningFactory<T> {
     }
 
     @Override
-    public VersioningRepository buildRepository(String repositoryId) {
-        return new FileBasedVersioningRepository(new File(rootDirectory, repositoryId));
+    public VersioningRepository<T> buildRepository(String repositoryId) {
+        return new FileBasedVersioningRepository<>(new File(rootDirectory, repositoryId));
     }
 }
