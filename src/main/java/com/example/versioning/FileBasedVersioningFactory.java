@@ -4,7 +4,7 @@ import java.io.File;
 
 public class FileBasedVersioningFactory<T> implements VersioningFactory<T> {
     private final File rootDirectory;
-    private Class<T> targetType;
+    private final Class<T> targetType;
 
     public FileBasedVersioningFactory(File rootDirectory, Class<Planning> targetType) {
         this.rootDirectory = rootDirectory;
