@@ -11,6 +11,6 @@ public class FileBasedVersioningFactory<T> implements VersioningFactory<T> {
 
     @Override
     public VersioningRepository<T> buildRepository(String repositoryId) {
-        return new FileBasedVersioningRepository<>(new File(rootDirectory, repositoryId));
+        return new FileBasedVersioningRepository<>(new File(rootDirectory, repositoryId), Planning.class);
     }
 }
