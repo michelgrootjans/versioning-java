@@ -8,13 +8,12 @@ import java.util.UUID;
 
 public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
     private final File rootDirectory;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final Class<Planning> targetType;
 
     public FileBasedVersioningRepository(File rootDirectory) {
         this.rootDirectory = rootDirectory;
-        this.objectMapper = new ObjectMapper();
-        targetType = Planning.class;
+        this.targetType = Planning.class;
     }
 
     @Override
@@ -54,12 +53,12 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private void pointHeadTo(String versionHash) {
-        write(new File(rootDirectory, "head.json"), new Head(versionHash));
+        write(rootFile("head.json"), new Head(versionHash));
     }
 
     private String createNewVersion2(T target) {
         String versionHash = UUID.randomUUID().toString();
-        File versionDirectory = new File(rootDirectory, versionHash);
+        File versionDirectory = directoryOf(versionHash);
         versionDirectory.mkdirs();
 
         write(new File(versionDirectory, targetName() + ".json"), target);
@@ -67,12 +66,21 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         return versionHash;
     }
 
+    private File directoryOf(String versionHash) {
+        return new File(rootDirectory, versionHash);
+    }
+
     private Head currentHead() {
         try {
-            return objectMapper.readValue(new File(rootDirectory, "head.json"), Head.class);
+            String fileName = "head.json";
+            return objectMapper.readValue(rootFile("head.json"), Head.class);
         } catch (IOException e) {
             return new Head("");
         }
+    }
+
+    private File rootFile(String fileName) {
+        return new File(rootDirectory, fileName);
     }
 
     private void write(File file, Object data) {
