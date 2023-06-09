@@ -1,7 +1,5 @@
 package com.example.versioning;
 
-import java.util.List;
-
 public class PlanningRepository {
     private final VersioningFactory<Planning> hub;
 
