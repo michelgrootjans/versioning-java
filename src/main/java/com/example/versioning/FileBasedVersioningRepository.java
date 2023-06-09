@@ -26,35 +26,47 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public T currentVersion() {
-        return readTarget(currentHead());
+        return readTarget(currentHash());
     }
 
     @Override
     public void undo() {
-        addToUndoStack(currentHead().hash());
+        addToUndoStack(currentHash());
         pointHeadTo(parentHash());
     }
 
+    private String currentHash() {
+        return currentHead().hash();
+    }
+
     private void addToUndoStack(String hash) {
+        write(new File(rootDirectory, "undo.json"), currentUndo().add(hash));
+    }
+
+    private Undo currentUndo() {
         Undo undo;
-        try {
-            undo = objectMapper.readValue(new File(rootDirectory, "undo.json"), Undo.class);
-        } catch (IOException e) {
+        File src = new File(rootDirectory, "undo.json");
+        if (src.exists()) {
+            try {
+                undo = objectMapper.readValue(src, Undo.class);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
             undo = new Undo();
         }
-        undo.add(hash);
-        write(new File(rootDirectory, "undo.json"), undo.add(hash));
+        return undo;
     }
 
     @Override
     public void redo() {
-            Planning planning = new Planning("123", "my first planning", List.of(new Order("laptop")));
-            createNewVersion((T) planning);
+        Planning planning = new Planning("123", "my first planning", List.of(new Order("laptop")));
+        createNewVersion((T) planning);
     }
 
-    private T readTarget(Head head) {
+    private T readTarget(String hash) {
         try {
-            File versionDirectory = new File(rootDirectory, head.hash());
+            File versionDirectory = new File(rootDirectory, hash);
             File targetFile = new File(versionDirectory, "target.json");
             return objectMapper.readValue(targetFile, targetType);
         } catch (IOException e) {
@@ -71,7 +83,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         versionDirectory.mkdirs();
 
         write(new File(versionDirectory, "target.json"), target);
-        write(new File(versionDirectory, "message.json"), new Message(currentHead().hash()));
+        write(new File(versionDirectory, "message.json"), new Message(currentHash()));
     }
 
     private File directoryOf(String versionHash) {
@@ -99,7 +111,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private String parentHash() {
-        File currentVersionDirectory = new File(rootDirectory, currentHead().hash());
+        File currentVersionDirectory = new File(rootDirectory, currentHash());
         File currentMessageFile = new File(currentVersionDirectory, "message.json");
         Message currentMessage;
         try {
