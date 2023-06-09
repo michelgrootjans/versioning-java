@@ -1,6 +1,6 @@
 package com.example.versioning;
 
-public class FileBasedPlanningRepository implements PlanningRepository {
+public class FileBasedPlanningRepository {
     private final VersionHub<Planning> hub;
 
     public FileBasedPlanningRepository(VersionHub<Planning> hub) {
@@ -15,7 +15,6 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         return hub.buildRepository(planningId).find(planningId);
     }
 
-    @Override
     public void undo(String planningId) {
         hub.buildRepository(planningId).undo();
     }

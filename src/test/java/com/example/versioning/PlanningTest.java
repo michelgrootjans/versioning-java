@@ -13,7 +13,7 @@ public class PlanningTest {
     @TempDir
     private File tempDir;
 
-    private PlanningRepository repository;
+    private FileBasedPlanningRepository repository;
 
     @BeforeEach
     void setUp() {
