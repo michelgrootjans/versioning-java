@@ -37,7 +37,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public void redo() {
-        // TODO [jirakey]: ugly and wrong
         Planning planning = new Planning("123", "my first planning", List.of(new Order("laptop")));
         createNewVersion((T) planning);
     }
@@ -47,19 +46,19 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private void addToUndoStack(String hash) {
-        write(new File(rootDirectory, "undo.json"), currentUndo().add(hash));
+        write(new File(rootDirectory, "undo.json"), currentUndo().push(hash));
     }
 
-    private Undo currentUndo() {
+    private UndoStack currentUndo() {
         File src = new File(rootDirectory, "undo.json");
         if (src.exists()) {
             try {
-                return objectMapper.readValue(src, Undo.class);
+                return objectMapper.readValue(src, UndoStack.class);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            return new Undo();
+            return new UndoStack();
         }
     }
 
