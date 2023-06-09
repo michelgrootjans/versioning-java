@@ -8,14 +8,19 @@ public class PlanningRepository {
     }
 
     public void save(Planning planning) {
-        hub.buildRepository(planning.id()).createNewVersion(planning);
+        String id = planning.id();
+        getPlanningVersioningRepository(id).createNewVersion(planning);
     }
 
     public Planning find(String planningId) {
-        return hub.buildRepository(planningId).currentVersion();
+        return getPlanningVersioningRepository(planningId).currentVersion();
     }
 
     public void undo(String planningId) {
-        hub.buildRepository(planningId).undo();
+        getPlanningVersioningRepository(planningId).undo();
+    }
+
+    private VersioningRepository<Planning> getPlanningVersioningRepository(String planningId) {
+        return hub.buildRepository("planning-" + planningId);
     }
 }
