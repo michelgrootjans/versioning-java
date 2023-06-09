@@ -8,11 +8,11 @@ public class FileBasedVersioningFactory<T> implements VersioningFactory<T> {
 
     public FileBasedVersioningFactory(File rootDirectory, Class<T> targetType) {
         this.rootDirectory = rootDirectory;
-        this.targetType = (Class<T>) targetType;
+        this.targetType = targetType;
     }
 
     @Override
     public VersioningRepository<T> buildRepository(String repositoryId) {
-        return new FileBasedVersioningRepository<T>(new File(rootDirectory, repositoryId), targetType);
+        return new FileBasedVersioningRepository<>(new File(rootDirectory, repositoryId), targetType);
     }
 }
