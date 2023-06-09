@@ -1,12 +1,10 @@
 package com.example.versioning;
 
-import java.io.File;
-
 public class FileBasedPlanningRepository implements PlanningRepository {
     private final VersionHub<Planning> hub;
 
-    public FileBasedPlanningRepository(File rootDirectory) {
-        this.hub = new FileBasedVersionHub<Planning>(rootDirectory);
+    public FileBasedPlanningRepository(VersionHub<Planning> hub) {
+        this.hub = hub;
     }
 
     public void save(Planning planning) {
