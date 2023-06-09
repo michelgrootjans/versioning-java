@@ -6,4 +6,6 @@ public interface VersioningRepository<T> {
     T currentVersion();
 
     void undo();
+
+    void redo();
 }

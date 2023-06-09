@@ -26,6 +26,6 @@ public class PlanningRepository {
     }
 
     public void redo(String number) {
-        save(new Planning("123", "my first planning", List.of(new Order("laptop"))));
+        getPlanningVersioningRepository(number).redo();
     }
 }
