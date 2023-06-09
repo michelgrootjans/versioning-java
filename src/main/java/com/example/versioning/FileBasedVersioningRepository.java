@@ -6,11 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-public class FileBasedVersionedRepository<T> implements VersionedRepository {
+public class FileBasedVersioningRepository<T> implements VersioningRepository {
     private final File rootDirectory;
     private final ObjectMapper objectMapper;
 
-    public FileBasedVersionedRepository(File rootDirectory) {
+    public FileBasedVersioningRepository(File rootDirectory) {
         this.rootDirectory = rootDirectory;
         this.objectMapper = new ObjectMapper();
     }

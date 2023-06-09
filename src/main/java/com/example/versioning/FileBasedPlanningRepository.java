@@ -1,9 +1,9 @@
 package com.example.versioning;
 
 public class FileBasedPlanningRepository {
-    private final VersionHub<Planning> hub;
+    private final VersioningFactory<Planning> hub;
 
-    public FileBasedPlanningRepository(VersionHub<Planning> hub) {
+    public FileBasedPlanningRepository(VersioningFactory<Planning> hub) {
         this.hub = hub;
     }
 
