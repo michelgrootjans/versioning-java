@@ -16,7 +16,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     @Override
-    public void createNewVersion(Object target) {
+    public void createNewVersion(T target) {
         String versionHash = createNewVersion2(target);
         pointHeadTo(versionHash);
     }

@@ -1,7 +1,7 @@
 package com.example.versioning;
 
 public interface VersioningRepository<T> {
-    void createNewVersion(Object t);
+    void createNewVersion(T t);
 
     Planning find(String planningId);
 
