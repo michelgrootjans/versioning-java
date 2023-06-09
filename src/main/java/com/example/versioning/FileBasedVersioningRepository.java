@@ -37,16 +37,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public void undo() {
-        Head head = currentHead();
-        File currentVersionDirectory = new File(rootDirectory, head.hash());
-        File currentMessageFile = new File(currentVersionDirectory, "message.json");
-        Message currentMessage;
-        try {
-            currentMessage = objectMapper.readValue(currentMessageFile, Message.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        pointHeadTo(currentMessage.parent());
+        pointHeadTo(parentHash());
     }
 
     @Override
@@ -91,5 +82,18 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String parentHash() {
+        File currentVersionDirectory = new File(rootDirectory, currentHead().hash());
+        File currentMessageFile = new File(currentVersionDirectory, "message.json");
+        Message currentMessage;
+        try {
+            currentMessage = objectMapper.readValue(currentMessageFile, Message.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String parentHash = currentMessage.parent();
+        return parentHash;
     }
 }
