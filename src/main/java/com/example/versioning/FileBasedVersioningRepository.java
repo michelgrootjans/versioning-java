@@ -11,9 +11,9 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     private final Class<Planning> targetType;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public FileBasedVersioningRepository(File rootDirectory, Class<Planning> targetType1) {
+    public FileBasedVersioningRepository(File rootDirectory, Class<Planning> targetType) {
         this.rootDirectory = rootDirectory;
-        this.targetType = targetType1;
+        this.targetType = targetType;
     }
 
     @Override
@@ -27,8 +27,8 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         try {
             Head head = currentHead();
             File versionDirectory = new File(rootDirectory, head.hash());
-            File planningFile = new File(versionDirectory, targetName() + ".json");
-            return objectMapper.readValue(planningFile, targetType);
+            File targetFile = new File(versionDirectory, targetName() + ".json");
+            return objectMapper.readValue(targetFile, targetType);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
