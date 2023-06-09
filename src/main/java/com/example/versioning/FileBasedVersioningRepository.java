@@ -8,12 +8,12 @@ import java.util.UUID;
 
 public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
     private final File rootDirectory;
-    private final Class<Planning> targetType;
+    private final Class<T> targetType;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public FileBasedVersioningRepository(File rootDirectory, Class<Planning> targetType) {
         this.rootDirectory = rootDirectory;
-        this.targetType = targetType;
+        this.targetType = (Class<T>) targetType;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
             Head head = currentHead();
             File versionDirectory = new File(rootDirectory, head.hash());
             File targetFile = new File(versionDirectory, "target.json");
-            return objectMapper.readValue(targetFile, targetType);
+            return (Planning) objectMapper.readValue(targetFile, targetType);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
