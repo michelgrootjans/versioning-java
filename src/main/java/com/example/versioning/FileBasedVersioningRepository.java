@@ -19,9 +19,9 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public void createNewVersion(T target) {
-        String versionHash = UUID.randomUUID().toString();
-        createNewVersion(versionHash, target);
-        pointHeadTo(versionHash);
+        String newHash = UUID.randomUUID().toString();
+        createNewVersion(newHash, target);
+        pointHeadTo(newHash);
     }
 
     @Override
@@ -33,6 +33,13 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     public void undo() {
         addToUndoStack(currentHash());
         pointHeadTo(parentHash());
+    }
+
+    @Override
+    public void redo() {
+        // TODO [jirakey]: ugly and wrong
+        Planning planning = new Planning("123", "my first planning", List.of(new Order("laptop")));
+        createNewVersion((T) planning);
     }
 
     private String currentHash() {
@@ -54,12 +61,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         } else {
             return new Undo();
         }
-    }
-
-    @Override
-    public void redo() {
-        Planning planning = new Planning("123", "my first planning", List.of(new Order("laptop")));
-        createNewVersion((T) planning);
     }
 
     private T readTarget(String hash) {
