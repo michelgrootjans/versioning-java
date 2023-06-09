@@ -33,7 +33,7 @@ public class PlanningTest {
     }
 
     @Test
-    void undoOnce() {
+    void undo() {
         repository.save(new Planning("123", "my first planning"));
         repository.save(new Planning("123", "my first planning", List.of(new Order("laptop"))));
         repository.undo("123");

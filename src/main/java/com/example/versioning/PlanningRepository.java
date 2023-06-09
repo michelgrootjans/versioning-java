@@ -8,8 +8,7 @@ public class PlanningRepository {
     }
 
     public void save(Planning planning) {
-        String id = planning.id();
-        getPlanningVersioningRepository(id).createNewVersion(planning);
+        getPlanningVersioningRepository(planning.id()).createNewVersion(planning);
     }
 
     public Planning find(String planningId) {
