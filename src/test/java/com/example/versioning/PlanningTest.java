@@ -49,4 +49,13 @@ public class PlanningTest {
         repository.undo("123");
         assertThat(repository.find("123")).isEqualTo(new Planning("123", "my first planning"));
     }
+
+    @Test
+    void redo() {
+        repository.save(new Planning("123", "my first planning"));
+        repository.save(new Planning("123", "my first planning", List.of(new Order("laptop"))));
+        repository.undo("123");
+        repository.redo("123");
+        assertThat(repository.find("123")).isEqualTo(new Planning("123", "my first planning", List.of(new Order("laptop"))));
+    }
 }

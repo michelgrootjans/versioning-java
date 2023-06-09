@@ -1,5 +1,7 @@
 package com.example.versioning;
 
+import java.util.List;
+
 public class PlanningRepository {
     private final VersioningFactory<Planning> hub;
 
@@ -21,5 +23,9 @@ public class PlanningRepository {
 
     private VersioningRepository<Planning> getPlanningVersioningRepository(String planningId) {
         return hub.buildRepository("planning-" + planningId);
+    }
+
+    public void redo(String number) {
+        save(new Planning("123", "my first planning", List.of(new Order("laptop"))));
     }
 }
