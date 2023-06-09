@@ -13,7 +13,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     public FileBasedVersioningRepository(File rootDirectory, Class<T> targetType) {
         this.rootDirectory = rootDirectory;
-        this.targetType = (Class<T>) targetType;
+        this.targetType = targetType;
     }
 
     @Override
@@ -23,19 +23,15 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     @Override
-    public Planning currentVersion() {
+    public T currentVersion() {
         try {
             Head head = currentHead();
             File versionDirectory = new File(rootDirectory, head.hash());
             File targetFile = new File(versionDirectory, "target.json");
-            return (Planning) objectMapper.readValue(targetFile, targetType);
+            return objectMapper.readValue(targetFile, targetType);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private String targetName() {
-        return targetType.getSimpleName();
     }
 
     @Override
