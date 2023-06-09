@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
     private final File rootDirectory;
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final Class<Planning> targetType;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public FileBasedVersioningRepository(File rootDirectory) {
         this.rootDirectory = rootDirectory;
