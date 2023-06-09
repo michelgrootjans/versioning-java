@@ -2,7 +2,7 @@ package com.example.versioning;
 
 import java.io.File;
 
-public class FileBasedVersionHub implements VersionHub {
+public class FileBasedVersionHub<T> implements VersionHub {
     private final File rootDirectory;
 
     public FileBasedVersionHub(File rootDirectory) {
