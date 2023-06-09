@@ -36,7 +36,14 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private void addToUndoStack(String hash) {
-        
+        Undo undo;
+        try {
+            undo = objectMapper.readValue(new File(rootDirectory, "undo.json"), Undo.class);
+        } catch (IOException e) {
+            undo = new Undo();
+        }
+        undo.add(hash);
+        write(new File(rootDirectory, "undo.json"), undo.add(hash));
     }
 
     @Override
