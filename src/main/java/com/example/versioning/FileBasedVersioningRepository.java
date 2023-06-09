@@ -36,15 +36,10 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public void redo() {
-        String hash = getTopOfUndoStack();
+        UndoStack undoStack = currentUndo();
+        String hash = undoStack.pop();
+        write(new File(rootDirectory, "undo.json"), undoStack);
         pointHeadTo(hash);
-        // point to that hash
-//        Planning planning = new Planning("123", "my first planning", List.of(new Order("laptop")));
-//        createNewVersion((T) planning);
-    }
-
-    private String getTopOfUndoStack() {
-        return currentUndo().pop();
     }
 
     private String currentHash() {
