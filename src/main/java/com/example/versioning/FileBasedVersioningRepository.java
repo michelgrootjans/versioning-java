@@ -37,8 +37,14 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public void redo() {
+        String hash = getTopOfUndoStack();
+        // point to that hash
         Planning planning = new Planning("123", "my first planning", List.of(new Order("laptop")));
         createNewVersion((T) planning);
+    }
+
+    private String getTopOfUndoStack() {
+        return null;
     }
 
     private String currentHash() {
