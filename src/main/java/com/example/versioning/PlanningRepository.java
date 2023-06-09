@@ -19,11 +19,11 @@ public class PlanningRepository {
         getPlanningVersioningRepository(planningId).undo();
     }
 
-    private VersioningRepository<Planning> getPlanningVersioningRepository(String planningId) {
-        return hub.buildRepository("planning-" + planningId);
+    public void redo(String planningId) {
+        getPlanningVersioningRepository(planningId).redo();
     }
 
-    public void redo(String number) {
-        getPlanningVersioningRepository(number).redo();
+    private VersioningRepository<Planning> getPlanningVersioningRepository(String planningId) {
+        return hub.buildRepository("planning-" + planningId);
     }
 }
