@@ -44,18 +44,16 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private Undo currentUndo() {
-        Undo undo;
         File src = new File(rootDirectory, "undo.json");
         if (src.exists()) {
             try {
-                undo = objectMapper.readValue(src, Undo.class);
+                return objectMapper.readValue(src, Undo.class);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            undo = new Undo();
+            return new Undo();
         }
-        return undo;
     }
 
     @Override
