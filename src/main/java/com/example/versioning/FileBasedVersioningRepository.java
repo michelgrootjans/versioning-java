@@ -20,20 +20,13 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     @Override
     public void createNewVersion(T target) {
         String versionHash = UUID.randomUUID().toString();
-        createNewVersion(target, versionHash);
+        createNewVersion(versionHash, target);
         pointHeadTo(versionHash);
     }
 
     @Override
     public T currentVersion() {
-        try {
-            Head head = currentHead();
-            File versionDirectory = new File(rootDirectory, head.hash());
-            File targetFile = new File(versionDirectory, "target.json");
-            return objectMapper.readValue(targetFile, targetType);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return readTarget(currentHead());
     }
 
     @Override
@@ -47,11 +40,21 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
             createNewVersion((T) planning);
     }
 
+    private T readTarget(Head head) {
+        try {
+            File versionDirectory = new File(rootDirectory, head.hash());
+            File targetFile = new File(versionDirectory, "target.json");
+            return objectMapper.readValue(targetFile, targetType);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void pointHeadTo(String versionHash) {
         write(rootFile("head.json"), new Head(versionHash));
     }
 
-    private void createNewVersion(T target, String versionHash) {
+    private void createNewVersion(String versionHash, T target) {
         File versionDirectory = directoryOf(versionHash);
         versionDirectory.mkdirs();
 
