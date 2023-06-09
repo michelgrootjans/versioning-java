@@ -19,7 +19,8 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public void createNewVersion(T target) {
-        String versionHash = createNewVersion2(target);
+        String versionHash = UUID.randomUUID().toString();
+        createNewVersion(target, versionHash);
         pointHeadTo(versionHash);
     }
 
@@ -50,14 +51,12 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         write(rootFile("head.json"), new Head(versionHash));
     }
 
-    private String createNewVersion2(T target) {
-        String versionHash = UUID.randomUUID().toString();
+    private void createNewVersion(T target, String versionHash) {
         File versionDirectory = directoryOf(versionHash);
         versionDirectory.mkdirs();
 
         write(new File(versionDirectory, "target.json"), target);
         write(new File(versionDirectory, "message.json"), new Message(currentHead().hash()));
-        return versionHash;
     }
 
     private File directoryOf(String versionHash) {
