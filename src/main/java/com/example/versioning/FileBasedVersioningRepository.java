@@ -85,10 +85,10 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     private Head2 readHead() {
         try {
             List<String> undolist = Files.readAllLines(Path.of(rootDirectory.getAbsolutePath(), "head"), StandardCharsets.UTF_8);
+            return new Head2(undolist);
         } catch (IOException e) {
             return new Head2();
         }
-        return new Head2();
     }
 
 
