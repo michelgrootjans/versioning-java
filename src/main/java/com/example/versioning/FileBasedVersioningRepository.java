@@ -25,13 +25,13 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public T currentVersion() {
-        return readTarget(currentHash());
+        return readTarget(head());
     }
 
     @Override
     public void undo() {
-        addToUndoStack(currentHash());
-        pointHeadTo(parentHash());
+        addToUndoStack(head());
+        pointHeadTo(parent());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         pointHeadTo(hash);
     }
 
-    private String currentHash() {
+    private String head() {
         return currentHead().hash();
     }
 
@@ -82,7 +82,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         versionDirectory.mkdirs();
 
         write(new File(versionDirectory, "target.json"), target);
-        write(new File(versionDirectory, "message.json"), new Message(currentHash()));
+        write(new File(versionDirectory, "message.json"), new Message(head()));
     }
 
     private File directoryOf(String versionHash) {
@@ -109,8 +109,8 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         }
     }
 
-    private String parentHash() {
-        File currentVersionDirectory = new File(rootDirectory, currentHash());
+    private String parent() {
+        File currentVersionDirectory = new File(rootDirectory, head());
         File currentMessageFile = new File(currentVersionDirectory, "message.json");
         Message currentMessage;
         try {
