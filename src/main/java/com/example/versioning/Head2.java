@@ -11,7 +11,6 @@ public class Head2 {
     }
 
     public Head2(List<String> undolist) {
-
         this.undolist = undolist;
     }
 
@@ -22,5 +21,10 @@ public class Head2 {
 
     public List<String> undoList() {
         return undolist;
+    }
+
+    public String hash() {
+        if (undolist.isEmpty()) return "";
+        return undolist.get(undolist.size()-1);
     }
 }

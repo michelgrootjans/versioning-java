@@ -51,6 +51,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private String head() {
+        String newHead = readHead().hash();
         return currentHead().hash();
     }
 
@@ -96,6 +97,12 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     private void save(Head2 head) {
         List<String> undolist = head.undoList();
+        String text = String.join("\n", undolist);
+        try {
+            Files.write(Path.of(rootDirectory.getAbsolutePath(), "head"), text.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
