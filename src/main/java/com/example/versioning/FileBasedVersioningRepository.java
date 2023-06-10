@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.UUID;
 
 public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
@@ -75,7 +78,19 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     private void pointHeadTo(String versionHash) {
         write(rootFile("head.json"), new Head(versionHash));
+        Head2 head = readHead();
     }
+
+    private Head2 readHead() {
+        try {
+            Files.readAllLines(Path.of(rootDirectory.getAbsolutePath(), "head"), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return new Head2();
+        }
+        return new Head2();
+    }
+
+
 
     private void createNewVersion(String versionHash, T target) {
         File versionDirectory = directoryOf(versionHash);
