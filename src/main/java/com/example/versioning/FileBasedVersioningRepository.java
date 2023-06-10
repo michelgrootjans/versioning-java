@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
 public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
@@ -83,7 +84,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     private Head2 readHead() {
         try {
-            Files.readAllLines(Path.of(rootDirectory.getAbsolutePath(), "head"), StandardCharsets.UTF_8);
+            List<String> undolist = Files.readAllLines(Path.of(rootDirectory.getAbsolutePath(), "head"), StandardCharsets.UTF_8);
         } catch (IOException e) {
             return new Head2();
         }
