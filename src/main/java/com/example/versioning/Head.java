@@ -1,4 +1,9 @@
 package com.example.versioning;
 
-public record Head(String hash) {
+import java.util.Stack;
+
+public record Head(String hash, Stack<String> undoStack) {
+    public Head(String hash) {
+        this(hash, new Stack<>());
+    }
 }
