@@ -19,4 +19,8 @@ public class Head2 {
         undolist.clear();
         undolist.add(newHash);
     }
+
+    public List<String> undoList() {
+        return undolist;
+    }
 }

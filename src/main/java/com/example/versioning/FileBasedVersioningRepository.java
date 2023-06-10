@@ -31,10 +31,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         save(head);
     }
 
-    private void save(Head2 head) {
-
-    }
-
     @Override
     public T currentVersion() {
         return readTarget(head());
@@ -96,6 +92,10 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         } catch (IOException e) {
             return new Head2();
         }
+    }
+
+    private void save(Head2 head) {
+        List<String> undolist = head.undoList();
     }
 
 
