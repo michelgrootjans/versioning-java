@@ -52,7 +52,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     private T readTarget(String hash) {
         try {
-            File versionDirectory = new File(rootDirectory, hash);
             File targetFile = new File(rootDirectory, hash + ".json");
             return objectMapper.readValue(targetFile, targetType);
         } catch (IOException e) {
