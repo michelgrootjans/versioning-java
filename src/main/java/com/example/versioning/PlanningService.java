@@ -16,6 +16,7 @@ public class PlanningService {
     }
 
     public Planning find(String planningId) {
+        Versions v = versions.find(planningId).orElseThrow();
         var currentVersion = versions.headOf(planningId);
         return plannings.find(currentVersion);
     }
