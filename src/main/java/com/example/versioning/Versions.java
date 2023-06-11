@@ -1,11 +1,13 @@
 package com.example.versioning;
 
-public record Versions(String head) {
+import java.util.List;
+
+public record Versions(String head, List<Version> versions) {
     public Versions() {
-        this("");
+        this("", List.of());
     }
 
     public Versions add(String versionHash) {
-        return new Versions(versionHash);
+        return new Versions(versionHash, List.of());
     }
 }
