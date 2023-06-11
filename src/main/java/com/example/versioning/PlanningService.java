@@ -16,11 +16,8 @@ public class PlanningService {
     }
 
     public Planning find(String planningId) {
-        String head = versions.find(planningId)
-            .map(v -> v.head())
-            .orElseThrow();
-        var currentVersion = versions.headOf(planningId);
-        return plannings.find(head);
+        Versions version = versions.find(planningId).orElseThrow();
+        return plannings.find(version.head());
     }
 
     public void undo(String planningId) {
