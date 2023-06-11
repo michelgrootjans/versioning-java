@@ -99,8 +99,8 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         write(new File(versionDirectory, "target.json"), target);
         write(new File(versionDirectory, "message.json"), new Message(head()));
 
-        var versions = getVersions();
-        write(rootFile("versions.json"), versions.add(versionHash));
+        Versions add = getVersions().add(versionHash);
+        write(rootFile("versions.json"), add);
     }
 
     private Versions getVersions() {
@@ -134,6 +134,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     private void write(File file, Object data) {
         try {
             objectMapper.writeValue(file, data);
+            System.out.println(data);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

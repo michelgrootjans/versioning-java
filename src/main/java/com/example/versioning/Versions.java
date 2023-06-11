@@ -6,6 +6,6 @@ public record Versions(String head) {
     }
 
     public Versions add(String versionHash) {
-        return new Versions(head);
+        return new Versions(versionHash);
     }
 }
