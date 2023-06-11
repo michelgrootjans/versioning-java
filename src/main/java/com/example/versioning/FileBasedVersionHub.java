@@ -2,11 +2,11 @@ package com.example.versioning;
 
 import java.io.File;
 
-public class FileBasedVersioningFactory<T> implements VersioningFactory<T> {
+public class FileBasedVersionHub<T> implements VersionHub<T> {
     private final File rootDirectory;
     private final Class<T> targetType;
 
-    public FileBasedVersioningFactory(File rootDirectory, Class<T> targetType) {
+    public FileBasedVersionHub(File rootDirectory, Class<T> targetType) {
         this.rootDirectory = rootDirectory;
         this.targetType = targetType;
     }

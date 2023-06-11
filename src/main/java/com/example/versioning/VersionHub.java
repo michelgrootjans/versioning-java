@@ -1,5 +1,5 @@
 package com.example.versioning;
 
-public interface VersioningFactory<T> {
+public interface VersionHub<T> {
     VersioningRepository<T> buildRepository(String repositoryId);
 }

@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
     private final File rootDirectory;
@@ -40,6 +43,12 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         String hash = undoStack.pop();
         write(new File(rootDirectory, "undo.json"), undoStack);
         pointHeadTo(hash);
+
+        // new implementation
+        List<File> versions = Stream.of(Objects.requireNonNull(rootDirectory.listFiles()))
+            .filter(File::isDirectory)
+            .toList();
+        System.out.println(versions);
     }
 
     private String head() {

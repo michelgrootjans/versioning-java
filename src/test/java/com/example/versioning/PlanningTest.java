@@ -17,7 +17,7 @@ public class PlanningTest {
 
     @BeforeEach
     void setUp() {
-        repository = new PlanningRepository(new FileBasedVersioningFactory<>(tempDir, Planning.class));
+        repository = new PlanningRepository(new FileBasedVersionHub<>(tempDir, Planning.class));
     }
 
     @Test
