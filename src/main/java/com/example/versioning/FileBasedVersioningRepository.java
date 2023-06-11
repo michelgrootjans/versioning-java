@@ -42,7 +42,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         addToUndoStack(head);
         pointHeadTo(parent());
 
-
         // new implementation
         Versions add = getVersions()
             .map(Versions::undo)
@@ -70,6 +69,12 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
                 throw new RuntimeException(e);
             }
         });
+
+        // new implementation
+        Versions add = getVersions()
+            .map(Versions::redo)
+            .orElseThrow();
+        write(rootFile("versions.json"), add);
     }
 
     private String head() {

@@ -19,6 +19,13 @@ public record Versions(String head, List<Version> versions) {
         return new Versions(head.parenHash(), versions);
     }
 
+    public Versions redo() {
+        var newVersion = versions.stream()
+            .filter(v -> v.parenHash().equals(this.head))
+            .findFirst().orElseThrow();
+        return new Versions(newVersion.hash(), versions);
+    }
+
     private List<Version> append(Version version) {
         return Stream.concat(
             versions.stream(),
