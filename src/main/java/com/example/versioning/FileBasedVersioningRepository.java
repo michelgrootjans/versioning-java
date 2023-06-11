@@ -56,23 +56,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         return currentHead().hash();
     }
 
-    private void addToUndoStack(String hash) {
-        write(new File(rootDirectory, "undo.json"), currentUndo().push(hash));
-    }
-
-    private UndoStack currentUndo() {
-        File src = new File(rootDirectory, "undo.json");
-        if (src.exists()) {
-            try {
-                return objectMapper.readValue(src, UndoStack.class);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            return new UndoStack();
-        }
-    }
-
     private T readTarget(String hash) {
         try {
             File versionDirectory = new File(rootDirectory, hash);
