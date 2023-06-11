@@ -20,6 +20,7 @@ public class PlanningService {
             .map(v -> v.push(newHead))
             .orElse(new Versions(newHead));
         this.versions.save(planningId, version);
+        plannings.save(planningId, planning);
         plannings.save(version.head(), planning);
     }
 
