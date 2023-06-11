@@ -20,6 +20,7 @@ public class PlanningTest {
     void setUp() {
         service = new PlanningService(
             new FileBasedVersionRepository(new File(tempDir, "versions")),
+            new FileBasedPlanningRepository(new File(tempDir, "latest-plannings")),
             new FileBasedPlanningRepository(new File(tempDir, "plannings"))
         );
     }
