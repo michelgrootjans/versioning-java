@@ -39,7 +39,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
         assert head1.equals(head);
 
-        return readTarget(head1);
+        return readTarget(head);
     }
 
     @Override
