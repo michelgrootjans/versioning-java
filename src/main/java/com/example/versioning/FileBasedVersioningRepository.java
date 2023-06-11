@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -38,16 +37,42 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public void redo() {
+        String currentVersion = head();
         UndoStack undoStack = currentUndo();
         String hash = undoStack.pop();
         write(new File(rootDirectory, "undo.json"), undoStack);
         pointHeadTo(hash);
 
         // new implementation
-        List<File> versions = Stream.of(rootDirectory.listFiles())
+        var versions = Stream.of(rootDirectory.listFiles())
             .filter(File::isDirectory)
+            .map(dir -> {
+                System.out.println(dir.getName());
+                return dir;
+            }).toList();
+        for (File version : versions) {
+            try {
+                Message message = objectMapper.readValue(new File(version, "message.json"), Message.class);
+                if (message.parent().equals(currentVersion)) {
+                    pointHeadTo(version.getName());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        var message = versions.stream()
+            .map(dir -> new File(dir, "message.json"))
+            .map(file -> {
+                try {
+                    return objectMapper.readValue(file, Message.class);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            })
+            .filter(m -> m.parent().equals(currentVersion))
             .toList();
-        System.out.println(versions);
+        System.out.println(message);
     }
 
     private String head() {
