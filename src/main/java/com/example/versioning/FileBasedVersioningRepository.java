@@ -51,10 +51,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         write(rootFile("versions.json"), add);
     }
 
-    private String head() {
-        return getVersions().orElseThrow().head();
-    }
-
     private T readTarget(String hash) {
         try {
             File versionDirectory = new File(rootDirectory, hash);
@@ -107,18 +103,5 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private String parent() {
-        File currentVersionDirectory = new File(rootDirectory, head());
-        File currentMessageFile = new File(currentVersionDirectory, "message.json");
-        Message currentMessage;
-        try {
-            currentMessage = objectMapper.readValue(currentMessageFile, Message.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        String parentHash = currentMessage.parent();
-        return parentHash;
     }
 }
