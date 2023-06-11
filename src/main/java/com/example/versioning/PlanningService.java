@@ -24,6 +24,7 @@ public class PlanningService {
     }
 
     public void undo(String planningId) {
+        versions.undo(planningId);
         repoOf(planningId).undo();
     }
 

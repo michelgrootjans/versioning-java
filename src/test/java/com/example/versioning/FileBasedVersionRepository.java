@@ -15,4 +15,9 @@ public class FileBasedVersionRepository implements VersionRepository {
     public String headOf(String id) {
         return null;
     }
+
+    @Override
+    public void undo(String id) {
+        
+    }
 }
