@@ -65,10 +65,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         }
     }
 
-    private void pointHeadTo(String versionHash) {
-        write(rootFile("head.json"), new Head(versionHash));
-    }
-
     private void createNewVersion(String versionHash, T target) {
         File versionDirectory = directoryOf(versionHash);
         versionDirectory.mkdirs();
