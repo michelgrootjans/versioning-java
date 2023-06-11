@@ -52,7 +52,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private String head() {
-        return currentHead().hash();
+        return getVersions().orElseThrow().head();
     }
 
     private T readTarget(String hash) {
@@ -75,7 +75,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     private Optional<Versions> getVersions() {
         try {
             Versions versions = readFile(rootFile("versions.json"), Versions.class);
-            System.out.println(versions);
             return Optional.ofNullable(versions);
         } catch (RuntimeException e) {
             return Optional.empty();
