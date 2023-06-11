@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class ListAppender {
-    static <T> List<T> append(T version, List<T> versions) {
+    private ListAppender() {
+    }
+
+    static <T> List<T> append(T item, List<T> list) {
         return Stream.concat(
-            versions.stream(),
-            Stream.of(version)
+            list.stream(),
+            Stream.of(item)
         ).toList();
     }
 }
