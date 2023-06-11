@@ -81,15 +81,11 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         return new File(rootDirectory, versionHash);
     }
 
-    private Head currentHead() {
-        return readFile(rootFile("head.json"), Head.class);
-    }
-
     private <T> T readFile(File file, Class<T> valueType) {
         try {
             return objectMapper.readValue(file, valueType);
         } catch (IOException e) {
-            return (T) new Head("");
+            throw new RuntimeException(e);
         }
     }
 
