@@ -16,4 +16,12 @@ class Head2Test {
         head.pointTo("123");
         assertThat(head.currentHead()).isEqualTo("123");
     }
+
+    @Test
+    void twoVersions() {
+        Head2 head = new Head2();
+        head.pointTo("123");
+        head.pointTo("456");
+        assertThat(head.currentHead()).isEqualTo("456");
+    }
 }
