@@ -117,7 +117,9 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     private Optional<Versions> getVersions() {
         try {
-            return Optional.ofNullable(readFile(rootFile("versions.json"), Versions.class));
+            Versions versions = readFile(rootFile("versions.json"), Versions.class);
+            System.out.println(versions);
+            return Optional.ofNullable(versions);
         } catch (RuntimeException e) {
             return Optional.empty();
         }
@@ -146,7 +148,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     private void write(File file, Object data) {
         try {
             objectMapper.writeValue(file, data);
-            System.out.println(data);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
