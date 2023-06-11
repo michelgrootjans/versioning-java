@@ -56,19 +56,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
                 throw new RuntimeException(e);
             }
         }
-
-        var message = versions.stream()
-            .map(dir -> new File(dir, "message.json"))
-            .map(file -> {
-                try {
-                    return objectMapper.readValue(file, Message.class);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            })
-            .filter(m -> m.parent().equals(currentVersion))
-            .toList();
-        System.out.println(message);
     }
 
     private String head() {
