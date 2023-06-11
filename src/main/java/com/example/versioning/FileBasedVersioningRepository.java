@@ -45,7 +45,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
                 System.out.println(dir.getName());
                 return dir;
             }).toList();
-        for (File version : versions) {
+        versions.forEach(version -> {
             try {
                 Message message = objectMapper.readValue(new File(version, "message.json"), Message.class);
                 if (message.parent().equals(currentVersion)) {
@@ -54,7 +54,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
+        });
     }
 
     private String head() {
@@ -98,6 +98,17 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
         write(new File(versionDirectory, "target.json"), target);
         write(new File(versionDirectory, "message.json"), new Message(head()));
+
+        var versions = getVersions();
+        write(rootFile("versions.json"), versions);
+    }
+
+    private Versions getVersions() {
+        try {
+            return readFile(rootFile("versions.json"), Versions.class);
+        } catch (RuntimeException e) {
+            return new Versions();
+        }
     }
 
     private File directoryOf(String versionHash) {
@@ -105,10 +116,14 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private Head currentHead() {
+        return readFile(rootFile("head.json"), Head.class);
+    }
+
+    private <T> T readFile(File file, Class<T> valueType) {
         try {
-            return objectMapper.readValue(rootFile("head.json"), Head.class);
+            return objectMapper.readValue(file, valueType);
         } catch (IOException e) {
-            return new Head("");
+            return (T) new Head("");
         }
     }
 
