@@ -60,8 +60,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private void createNewVersion(String versionHash, T target) {
-        File versionDirectory = new File(rootDirectory, versionHash);
-
         writeFile(new File(rootDirectory, versionHash + ".json"), target);
     }
 
