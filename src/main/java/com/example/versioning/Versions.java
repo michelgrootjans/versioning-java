@@ -12,6 +12,10 @@ public record Versions(String head, List<Version> versions) {
         return new Versions(versionHash, append(new Version(versionHash, head)));
     }
 
+    public Versions undo() {
+        return this;
+    }
+
     private List<Version> append(Version version) {
         return Stream.concat(
             versions.stream(),

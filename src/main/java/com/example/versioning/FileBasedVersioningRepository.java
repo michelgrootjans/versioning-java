@@ -23,6 +23,12 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         String newHash = UUID.randomUUID().toString();
         createNewVersion(newHash, target);
         pointHeadTo(newHash);
+
+        // new implementation
+        Versions add = getVersions()
+            .map(v -> v.add(newHash))
+            .orElse(new Versions(newHash));
+        write(rootFile("versions.json"), add);
     }
 
     @Override
@@ -32,8 +38,16 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public void undo() {
-        addToUndoStack(head());
+        String head = head();
+        addToUndoStack(head);
         pointHeadTo(parent());
+
+
+        // new implementation
+        Versions add = getVersions()
+            .map(Versions::undo)
+            .orElseThrow();
+        write(rootFile("versions.json"), add);
     }
 
     @Override
@@ -99,11 +113,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
         write(new File(versionDirectory, "target.json"), target);
         write(new File(versionDirectory, "message.json"), new Message(head()));
-
-        Versions add = getVersions()
-            .map(v -> v.add(versionHash))
-            .orElse(new Versions(versionHash));
-        write(rootFile("versions.json"), add);
     }
 
     private Optional<Versions> getVersions() {
