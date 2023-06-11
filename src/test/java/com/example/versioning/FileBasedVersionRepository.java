@@ -26,9 +26,9 @@ public class FileBasedVersionRepository implements VersionRepository {
     }
 
     @Override
-    public void save(String planningId, Versions version) {
+    public void save(String id, Versions version) {
         try {
-            objectMapper.writeValue(new File(rootDirectory, planningId + "versions.json"), version);
+            objectMapper.writeValue(new File(rootDirectory, id + "versions.json"), version);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
