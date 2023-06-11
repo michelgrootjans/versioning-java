@@ -23,11 +23,11 @@ public class PlanningService {
     public void undo(String planningId) {
         Versions version = versions.find(planningId).orElseThrow();
         versions.save(planningId, version.undo());
-//        repoOf(planningId).undo();
     }
 
     public void redo(String planningId) {
-        repoOf(planningId).redo();
+        Versions version = versions.find(planningId).orElseThrow();
+        versions.save(planningId, version.redo());
     }
 
     private VersioningRepository<Planning> repoOf(String planningId) {
