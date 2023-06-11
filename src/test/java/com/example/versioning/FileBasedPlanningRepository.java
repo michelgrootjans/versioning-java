@@ -19,7 +19,7 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     @Override
     public void save(String id, Planning planning) {
         try {
-            objectMapper.writeValue(new File(rootDirectory, "%s.json".formatted(id)), planning);
+            objectMapper.writeValue(planningFile(id), planning);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -29,10 +29,14 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     @Override
     public Planning getPlanning(String id) {
         try {
-            File targetFile = new File(rootDirectory, "%s.json".formatted(id));
+            File targetFile = planningFile(id);
             return objectMapper.readValue(targetFile, Planning.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private File planningFile(String id) {
+        return new File(rootDirectory, "%s.json".formatted(id));
     }
 }
