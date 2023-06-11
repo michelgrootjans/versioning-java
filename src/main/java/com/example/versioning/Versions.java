@@ -1,7 +1,8 @@
 package com.example.versioning;
 
+import static com.example.versioning.ListAppender.append;
+
 import java.util.List;
-import java.util.stream.Stream;
 
 public record Versions(String head, List<Version> versions) {
     public Versions(String root) {
@@ -9,7 +10,7 @@ public record Versions(String head, List<Version> versions) {
     }
 
     public Versions push(String versionHash) {
-        return new Versions(versionHash, append(new Version(versionHash, head)));
+        return new Versions(versionHash, append(new Version(versionHash, head), versions));
     }
 
     public Versions undo() {
@@ -24,12 +25,5 @@ public record Versions(String head, List<Version> versions) {
             .filter(v -> v.parenHash().equals(this.head))
             .findFirst().orElseThrow();
         return new Versions(newVersion.hash(), versions);
-    }
-
-    private List<Version> append(Version version) {
-        return Stream.concat(
-            versions.stream(),
-            Stream.of(version)
-        ).toList();
     }
 }
