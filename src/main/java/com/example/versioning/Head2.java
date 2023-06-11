@@ -36,6 +36,7 @@ public class Head2 {
 
     public void undo(String parent) {
         undolist.add(parent);
+        undoStack.push(parent);
     }
 
     public void redo() {
