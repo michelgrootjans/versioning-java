@@ -13,7 +13,10 @@ public record Versions(String head, List<Version> versions) {
     }
 
     public Versions undo() {
-        return this;
+        var head = versions.stream()
+            .filter(v -> v.hash().equals(this.head))
+            .findFirst().orElseThrow();
+        return new Versions(head.parenHash(), versions);
     }
 
     private List<Version> append(Version version) {
