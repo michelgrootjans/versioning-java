@@ -19,7 +19,7 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     }
 
     @Override
-    public Planning find(String id) {
+    public Planning getPlanning(String id) {
         try {
             File targetFile = new File(rootDirectory, "%s.json".formatted(id));
             return objectMapper.readValue(targetFile, Planning.class);

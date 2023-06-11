@@ -13,7 +13,7 @@ public class PlanningService {
 
     public Planning find(String planningId) {
         Versions version = versions.find(planningId).orElseThrow();
-        return plannings.find(version.head());
+        return plannings.getPlanning(version.head());
     }
 
     public void save(String planningId, Planning planning) {
@@ -22,9 +22,8 @@ public class PlanningService {
 
     public void undo(String planningId) {
         Versions version = versions.find(planningId).orElseThrow();
-        version.undo();
-        versions.save(planningId, version);
-        repoOf(planningId).undo();
+        versions.save(planningId, version.undo());
+//        repoOf(planningId).undo();
     }
 
     public void redo(String planningId) {
