@@ -38,10 +38,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     @Override
     public void redo() {
         String currentVersion = head();
-        UndoStack undoStack = currentUndo();
-        String hash = undoStack.pop();
-        write(new File(rootDirectory, "undo.json"), undoStack);
-        pointHeadTo(hash);
 
         // new implementation
         var versions = Stream.of(rootDirectory.listFiles())
