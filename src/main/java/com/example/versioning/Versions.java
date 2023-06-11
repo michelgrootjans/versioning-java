@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public record Versions(String head, List<Version> versions) {
-    public Versions(String rootHash) {
-        this(rootHash, List.of(new Version(rootHash, "")));
+    public Versions(String root) {
+        this(root, List.of(new Version(root, "")));
     }
 
     public Versions push(String versionHash) {
