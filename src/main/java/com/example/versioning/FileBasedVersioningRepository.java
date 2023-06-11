@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -99,15 +100,17 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         write(new File(versionDirectory, "target.json"), target);
         write(new File(versionDirectory, "message.json"), new Message(head()));
 
-        Versions add = getVersions().add(versionHash);
+        Versions add = getVersions()
+            .map(v -> v.add(versionHash))
+            .orElse(new Versions(versionHash));
         write(rootFile("versions.json"), add);
     }
 
-    private Versions getVersions() {
+    private Optional<Versions> getVersions() {
         try {
-            return readFile(rootFile("versions.json"), Versions.class);
+            return Optional.ofNullable(readFile(rootFile("versions.json"), Versions.class));
         } catch (RuntimeException e) {
-            return new Versions();
+            return Optional.empty();
         }
     }
 

@@ -1,4 +1,4 @@
 package com.example.versioning;
 
-public record Version() {
+public record Version(String parent) {
 }
