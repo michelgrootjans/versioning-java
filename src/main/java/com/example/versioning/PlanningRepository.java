@@ -7,8 +7,8 @@ public class PlanningRepository {
         this.hub = hub;
     }
 
-    public void save(Planning planning) {
-        repoOf(planning.id()).createNewVersion(planning);
+    public void save(String id, Planning planning) {
+        repoOf(id).createNewVersion(planning);
     }
 
     public Planning find(String planningId) {
