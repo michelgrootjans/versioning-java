@@ -26,7 +26,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         Versions add = getVersions()
             .map(v -> v.add(newHash))
             .orElse(new Versions(newHash));
-        write(rootFile("versions.json"), add);
+        write(new File(rootDirectory, "versions.json"), add);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         Versions add = getVersions()
             .map(Versions::undo)
             .orElseThrow();
-        write(rootFile("versions.json"), add);
+        write(new File(rootDirectory, "versions.json"), add);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         Versions add = getVersions()
             .map(Versions::redo)
             .orElseThrow();
-        write(rootFile("versions.json"), add);
+        write(new File(rootDirectory, "versions.json"), add);
     }
 
     private T readTarget(String hash) {
@@ -70,7 +70,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     private Optional<Versions> getVersions() {
         try {
-            Versions versions = readFile(rootFile("versions.json"), Versions.class);
+            Versions versions = readFile(new File(rootDirectory, "versions.json"), Versions.class);
             return Optional.ofNullable(versions);
         } catch (RuntimeException e) {
             return Optional.empty();
@@ -87,10 +87,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private File rootFile(String fileName) {
-        return new File(rootDirectory, fileName);
     }
 
     private void write(File file, Object data) {
