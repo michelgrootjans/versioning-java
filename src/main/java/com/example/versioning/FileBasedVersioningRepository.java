@@ -4,10 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 import java.util.UUID;
 
 public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
@@ -25,10 +21,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         String newHash = UUID.randomUUID().toString();
         createNewVersion(newHash, target);
         pointHeadTo(newHash);
-        // new impl
-        Head2 head = readHead();
-        head.pointTo(newHash);
-        save(head);
     }
 
     @Override
@@ -40,11 +32,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     public void undo() {
         addToUndoStack(head());
         pointHeadTo(parent());
-
-        // new impl
-        Head2 head = readHead();
-        head.undo(parent());
-        save(head);
     }
 
     @Override
@@ -53,15 +40,9 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         String hash = undoStack.pop();
         write(new File(rootDirectory, "undo.json"), undoStack);
         pointHeadTo(hash);
-
-        // new impl
-        Head2 head = readHead();
-        head.redo();
-        save(head);
     }
 
     private String head() {
-        String newHead = readHead().currentHead();
         return currentHead().hash();
     }
 
@@ -95,27 +76,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     private void pointHeadTo(String versionHash) {
         write(rootFile("head.json"), new Head(versionHash));
     }
-
-    private Head2 readHead() {
-        try {
-            List<String> undolist = Files.readAllLines(Path.of(rootDirectory.getAbsolutePath(), "head"), StandardCharsets.UTF_8);
-            return new Head2(undolist);
-        } catch (IOException e) {
-            return new Head2();
-        }
-    }
-
-    private void save(Head2 head) {
-        List<String> undolist = head.undoList();
-        String text = String.join("\n", undolist);
-        try {
-            Files.write(Path.of(rootDirectory.getAbsolutePath(), "head"), text.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
 
     private void createNewVersion(String versionHash, T target) {
         File versionDirectory = directoryOf(versionHash);
