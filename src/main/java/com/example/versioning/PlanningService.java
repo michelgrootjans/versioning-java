@@ -11,13 +11,13 @@ public class PlanningService {
         this.plannings = plannings;
     }
 
-    public void save(String planningId, Planning planning) {
-        repoOf(planningId).createNewVersion(planning);
-    }
-
     public Planning find(String planningId) {
         Versions version = versions.find(planningId).orElseThrow();
         return plannings.find(version.head());
+    }
+
+    public void save(String planningId, Planning planning) {
+        repoOf(planningId).createNewVersion(planning);
     }
 
     public void undo(String planningId) {
