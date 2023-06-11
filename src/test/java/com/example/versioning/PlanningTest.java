@@ -6,7 +6,6 @@ import com.example.plannings.Order;
 import com.example.plannings.Planning;
 import com.example.plannings.PlanningService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -23,7 +22,7 @@ public class PlanningTest {
     void setUp() {
         service = new PlanningService(
             new FileBasedVersionRepository(new File(tempDir, "versions")),
-            new FileBasedPlanningRepository(tempDir)
+            new FileBasedPlanningRepository(new File(tempDir, "plannings"))
         );
     }
 
@@ -79,7 +78,6 @@ public class PlanningTest {
     }
 
     @Test
-    @Disabled
     void twoPlannings() {
         service.save("123", new Planning("planning 1"));
         service.save("456", new Planning("planning 2"));

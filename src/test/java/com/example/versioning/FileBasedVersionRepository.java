@@ -18,7 +18,7 @@ public class FileBasedVersionRepository implements VersionRepository {
     @Override
     public Optional<Versions> find(String id) {
         try {
-            Versions result = objectMapper.readValue(new File(rootDirectory, "versions.json"), Versions.class);
+            Versions result = objectMapper.readValue(new File(rootDirectory, id + "versions.json"), Versions.class);
             return Optional.ofNullable(result);
         } catch (IOException e) {
             return Optional.empty();
@@ -28,7 +28,7 @@ public class FileBasedVersionRepository implements VersionRepository {
     @Override
     public void save(String planningId, Versions version) {
         try {
-            objectMapper.writeValue(new File(rootDirectory, "versions.json"), version);
+            objectMapper.writeValue(new File(rootDirectory, planningId + "versions.json"), version);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
