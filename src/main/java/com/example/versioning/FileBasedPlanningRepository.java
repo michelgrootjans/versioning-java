@@ -1,9 +1,16 @@
 package com.example.versioning;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
+import java.io.IOException;
 
 public class FileBasedPlanningRepository implements PlanningRepository {
-    public FileBasedPlanningRepository(File rootDir) {
+    private final File rootDirectory;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public FileBasedPlanningRepository(File rootDirectory) {
+        this.rootDirectory = rootDirectory;
     }
 
     @Override
@@ -13,6 +20,11 @@ public class FileBasedPlanningRepository implements PlanningRepository {
 
     @Override
     public Planning find(String id) {
-        return null;
+        try {
+            File targetFile = new File(rootDirectory, id + ".json");
+            return objectMapper.readValue(targetFile, Planning.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
