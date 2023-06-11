@@ -22,9 +22,8 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         String newHash = UUID.randomUUID().toString();
         createNewVersion(newHash, target);
 
-        // new implementation
         Versions add = getVersions()
-            .map(v -> v.add(newHash))
+            .map(v -> v.push(newHash))
             .orElse(new Versions(newHash));
         write(new File(rootDirectory, "versions.json"), add);
     }
@@ -66,6 +65,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         versionDirectory.mkdirs();
 
         write(new File(versionDirectory, "target.json"), target);
+        write(new File(versionDirectory, versionHash + ".json"), target);
     }
 
     private Optional<Versions> getVersions() {

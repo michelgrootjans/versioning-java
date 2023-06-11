@@ -8,7 +8,7 @@ public record Versions(String head, List<Version> versions) {
         this(rootHash, List.of(new Version(rootHash, "")));
     }
 
-    public Versions add(String versionHash) {
+    public Versions push(String versionHash) {
         return new Versions(versionHash, append(new Version(versionHash, head)));
     }
 
