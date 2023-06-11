@@ -20,7 +20,8 @@ public class PlanningTest {
     void setUp() {
         repository = new PlanningService(
             new FileBasedVersionHub<>(tempDir, Planning.class),
-            new FileBasedVersionRepository(tempDir)
+            new FileBasedVersionRepository(tempDir),
+            new FileBasedPlanningRepository(tempDir)
         );
     }
 
