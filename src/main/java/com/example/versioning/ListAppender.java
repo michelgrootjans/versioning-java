@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class ListAppender {
-    static List<Version> append(Version version, List<Version> versions) {
+    static <T> List<T> append(T version, List<T> versions) {
         return Stream.concat(
             versions.stream(),
             Stream.of(version)
