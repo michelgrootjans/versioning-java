@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileBasedPlanningRepository implements PlanningRepository {
     private final File rootDirectory;
@@ -28,12 +30,22 @@ public class FileBasedPlanningRepository implements PlanningRepository {
 
     @Override
     public Planning getPlanning(String id) {
+        return getPlanning(planningFile(id));
+    }
+
+    private Planning getPlanning(File targetFile) {
         try {
-            File targetFile = planningFile(id);
             return objectMapper.readValue(targetFile, Planning.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Planning> all() {
+        return Arrays.stream(rootDirectory.listFiles())
+            .map(file -> getPlanning(file))
+            .toList();
     }
 
     private File planningFile(String id) {
