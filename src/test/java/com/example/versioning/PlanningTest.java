@@ -2,6 +2,9 @@ package com.example.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.example.plannings.Order;
+import com.example.plannings.Planning;
+import com.example.plannings.PlanningService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

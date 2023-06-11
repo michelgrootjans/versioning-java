@@ -1,4 +1,7 @@
-package com.example.versioning;
+package com.example.plannings;
+
+import com.example.versioning.VersionRepository;
+import com.example.versioning.Versions;
 
 import java.util.UUID;
 

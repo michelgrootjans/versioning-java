@@ -1,4 +1,4 @@
-package com.example.versioning;
+package com.example.plannings;
 
 public record Order(String name) {
 }

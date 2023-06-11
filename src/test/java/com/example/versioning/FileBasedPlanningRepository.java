@@ -1,5 +1,7 @@
 package com.example.versioning;
 
+import com.example.plannings.Planning;
+import com.example.plannings.PlanningRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;

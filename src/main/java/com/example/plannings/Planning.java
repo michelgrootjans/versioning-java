@@ -1,4 +1,4 @@
-package com.example.versioning;
+package com.example.plannings;
 
 import java.util.ArrayList;
 import java.util.List;
