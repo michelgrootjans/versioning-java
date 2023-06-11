@@ -7,16 +7,17 @@ import java.util.UUID;
 
 public class PlanningService {
     private final VersionRepository versions;
-    private final PlanningRepository plannings;
+    private final PlanningRepository latestVersions;
+    private final PlanningRepository allVersions;
 
     public PlanningService(VersionRepository versions, PlanningRepository plannings) {
         this.versions = versions;
-        this.plannings = plannings;
+        this.latestVersions = plannings;
+        this.allVersions = plannings;
     }
 
     public Planning find(String planningId) {
-        Versions version = versions.find(planningId).orElseThrow();
-        return plannings.getPlanning(planningId);
+        return latestVersions.getPlanning(planningId);
     }
 
     public void save(String planningId, Planning planning) {
@@ -25,21 +26,21 @@ public class PlanningService {
             .map(v -> v.push(newHead))
             .orElse(new Versions(newHead));
         this.versions.save(planningId, version);
-        plannings.save(planningId, planning);
-        plannings.save(version.head(), planning);
+        latestVersions.save(planningId, planning);
+        allVersions.save(version.head(), planning);
     }
 
     public void undo(String planningId) {
         Versions newVersion = versions.find(planningId).orElseThrow().undo();
         versions.save(planningId, newVersion);
-        Planning planning = plannings.getPlanning(newVersion.head());
-        plannings.save(planningId, planning);
+        Planning planning = allVersions.getPlanning(newVersion.head());
+        latestVersions.save(planningId, planning);
     }
 
     public void redo(String planningId) {
         Versions newVersion = versions.find(planningId).orElseThrow().redo();
         versions.save(planningId, newVersion);
-        Planning planning = plannings.getPlanning(newVersion.head());
-        plannings.save(planningId, planning);
+        Planning planning = allVersions.getPlanning(newVersion.head());
+        latestVersions.save(planningId, planning);
     }
 }
