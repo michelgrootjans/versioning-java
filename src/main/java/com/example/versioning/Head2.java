@@ -14,7 +14,7 @@ public class Head2 {
 
     public Head2(List<String> undolist) {
         this.undolist = undolist;
-        this.undoStack = new Stack<String>();
+        this.undoStack = new Stack<>();
     }
 
     public String currentHead() {
@@ -25,6 +25,9 @@ public class Head2 {
     public void pointTo(String newHash) {
         undolist.clear();
         undolist.add(newHash);
+
+        undoStack.clear();
+        undoStack.push(newHash);
     }
 
     public List<String> undoList() {
