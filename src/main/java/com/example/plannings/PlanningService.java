@@ -16,7 +16,7 @@ public class PlanningService {
 
     public Planning find(String planningId) {
         Versions version = versions.find(planningId).orElseThrow();
-        return plannings.getPlanning(version.head());
+        return plannings.getPlanning(planningId);
     }
 
     public void save(String planningId, Planning planning) {
