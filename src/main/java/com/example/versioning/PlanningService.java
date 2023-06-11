@@ -12,9 +12,6 @@ public class PlanningService {
     }
 
     public void save(String planningId, Planning planning) {
-        versions.find(planningId)
-            .map(Versions::head)
-            .ifPresent(hash -> plannings.save(hash, planning));
         repoOf(planningId).createNewVersion(planning);
     }
 
