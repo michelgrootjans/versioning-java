@@ -51,7 +51,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private String head() {
-        String newHead = readHead().hash();
+        String newHead = readHead().currentHead();
         return currentHead().hash();
     }
 
