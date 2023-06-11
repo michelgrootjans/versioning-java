@@ -3,12 +3,10 @@ package com.example.versioning;
 import java.util.UUID;
 
 public class PlanningService {
-    private final VersionHub<Planning> hub;
     private final VersionRepository versions;
     private final PlanningRepository plannings;
 
-    public PlanningService(VersionHub<Planning> hub, VersionRepository versions, PlanningRepository plannings) {
-        this.hub = hub;
+    public PlanningService(VersionRepository versions, PlanningRepository plannings) {
         this.versions = versions;
         this.plannings = plannings;
     }
@@ -25,7 +23,6 @@ public class PlanningService {
             .orElse(new Versions(newHash));
         versions.save(planningId, version);
         plannings.save(version.head(), planning);
-//        hub.buildRepository("planning-" + planningId).createNewVersion(planning, version.head());
     }
 
     public void undo(String planningId) {
