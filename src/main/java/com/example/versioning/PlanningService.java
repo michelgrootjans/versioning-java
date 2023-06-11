@@ -29,6 +29,7 @@ public class PlanningService {
     }
 
     public void redo(String planningId) {
+        versions.redo(planningId);
         repoOf(planningId).redo();
     }
 

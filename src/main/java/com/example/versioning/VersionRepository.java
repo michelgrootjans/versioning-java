@@ -6,4 +6,6 @@ public interface VersionRepository {
     String headOf(String id);
 
     void undo(String id);
+
+    void redo(String id);
 }

@@ -18,6 +18,11 @@ public class FileBasedVersionRepository implements VersionRepository {
 
     @Override
     public void undo(String id) {
+
+    }
+
+    @Override
+    public void redo(String id) {
         
     }
 }
