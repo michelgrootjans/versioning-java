@@ -22,7 +22,7 @@ public class PlanningService {
         Versions version = versions.find(planningId).orElse(new Versions(UUID.randomUUID().toString()));
         versions.save(planningId, version);
 //        plannings.save(version.head(), planning);
-        hub.buildRepository("planning-" + planningId).createNewVersion(planning);
+        hub.buildRepository("planning-" + planningId).createNewVersion(planning, version.head());
     }
 
     public void undo(String planningId) {

@@ -18,7 +18,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     @Override
-    public void createNewVersion(T target) {
+    public void createNewVersion(T target, String head) {
         String newHash = UUID.randomUUID().toString();
         createNewVersion(newHash, target);
 
