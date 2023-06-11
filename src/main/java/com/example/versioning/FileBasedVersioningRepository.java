@@ -40,6 +40,11 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     public void undo() {
         addToUndoStack(head());
         pointHeadTo(parent());
+
+        // new impl
+        Head2 head = readHead();
+        head.undo(parent());
+        save(head);
     }
 
     @Override

@@ -16,7 +16,7 @@ public class Head2 {
 
     public String currentHead() {
         if (undolist.isEmpty()) return "";
-        return undolist.get(undolist.size()-1);
+        return undolist.get(0);
     }
 
     public void pointTo(String newHash) {
@@ -26,5 +26,9 @@ public class Head2 {
 
     public List<String> undoList() {
         return undolist;
+    }
+
+    public void undo(String parent) {
+
     }
 }
