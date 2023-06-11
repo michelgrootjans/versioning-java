@@ -19,10 +19,13 @@ public class PlanningService {
     }
 
     public void save(String planningId, Planning planning) {
-        Versions version = versions.find(planningId).orElse(new Versions(UUID.randomUUID().toString()));
+        String newHash = UUID.randomUUID().toString();
+        Versions version = versions.find(planningId)
+            .map(v -> v.push(newHash))
+            .orElse(new Versions(newHash));
         versions.save(planningId, version);
-//        plannings.save(version.head(), planning);
-        hub.buildRepository("planning-" + planningId).createNewVersion(planning, version.head());
+        plannings.save(version.head(), planning);
+//        hub.buildRepository("planning-" + planningId).createNewVersion(planning, version.head());
     }
 
     public void undo(String planningId) {
