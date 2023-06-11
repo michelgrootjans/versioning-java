@@ -1,10 +1,12 @@
 package com.example.versioning;
 
-public class PlanningRepository {
+public class PlanningService {
     private final VersionHub<Planning> hub;
+    private final VersionRepository versions;
 
-    public PlanningRepository(VersionHub<Planning> hub) {
+    public PlanningService(VersionHub<Planning> hub, VersionRepository versions) {
         this.hub = hub;
+        this.versions = versions;
     }
 
     public void save(String id, Planning planning) {

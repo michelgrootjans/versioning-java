@@ -14,11 +14,14 @@ public class PlanningTest {
     @TempDir
     private File tempDir;
 
-    private PlanningRepository repository;
+    private PlanningService repository;
 
     @BeforeEach
     void setUp() {
-        repository = new PlanningRepository(new FileBasedVersionHub<>(tempDir, Planning.class));
+        repository = new PlanningService(
+            new FileBasedVersionHub<>(tempDir, Planning.class),
+            new FileBasedVersionRepository(tempDir)
+        );
     }
 
     @Test
