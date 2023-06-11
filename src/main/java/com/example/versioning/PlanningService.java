@@ -21,12 +21,10 @@ public class PlanningService {
     }
 
     public void undo(String planningId) {
-        versions.undo(planningId);
         repoOf(planningId).undo();
     }
 
     public void redo(String planningId) {
-        versions.redo(planningId);
         repoOf(planningId).redo();
     }
 

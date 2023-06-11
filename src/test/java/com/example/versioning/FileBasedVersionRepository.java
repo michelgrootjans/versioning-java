@@ -19,21 +19,6 @@ public class FileBasedVersionRepository implements VersionRepository {
         return getVersions();
     }
 
-    @Override
-    public String headOf(String id) {
-        return getVersions().map(Versions::head).orElseThrow();
-    }
-
-    @Override
-    public void undo(String id) {
-
-    }
-
-    @Override
-    public void redo(String id) {
-        
-    }
-
     private Optional<Versions> getVersions() {
         try {
             Versions result;
