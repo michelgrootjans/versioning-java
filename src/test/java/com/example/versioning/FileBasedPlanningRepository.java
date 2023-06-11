@@ -25,12 +25,18 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
     public Planning getPlanning(String id) {
         return getPlanning(planningFile(id));
+    }
+
+    @Override
+    public List<Planning> all() {
+        return Arrays.stream(rootDirectory.listFiles())
+            .map(this::getPlanning)
+            .toList();
     }
 
     private Planning getPlanning(File targetFile) {
@@ -41,14 +47,7 @@ public class FileBasedPlanningRepository implements PlanningRepository {
         }
     }
 
-    @Override
-    public List<Planning> all() {
-        return Arrays.stream(rootDirectory.listFiles())
-            .map(file -> getPlanning(file))
-            .toList();
-    }
-
     private File planningFile(String id) {
-        return new File(rootDirectory, "planning.%s.json".formatted(id));
+        return new File(rootDirectory, "%s.json".formatted(id));
     }
 }
