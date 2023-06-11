@@ -3,6 +3,7 @@ package com.example.plannings;
 import com.example.versioning.VersionRepository;
 import com.example.versioning.Versions;
 
+import java.util.List;
 import java.util.UUID;
 
 public class PlanningService {
@@ -42,5 +43,12 @@ public class PlanningService {
         versions.save(planningId, newVersion);
         Planning planning = allPlannings.getPlanning(newVersion.head());
         latestPlannings.save(planningId, planning);
+    }
+
+    public List<Planning> all() {
+        return List.of(
+            new Planning("planning 123"),
+            new Planning("planning 456")
+        );
     }
 }

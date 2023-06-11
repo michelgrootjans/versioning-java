@@ -79,14 +79,13 @@ public class PlanningTest {
     }
 
 
-// not possible yet
-//    @Test
-//    void findAllPlannings() {
-//        service.save("123", new Planning("planning 123"));
-//        service.save("456", new Planning("planning 456"));
-//        assertThat(service.all()).containsExactlyInAnyOrder(
-//            new Planning("planning 123"),
-//            new Planning("planning 456")
-//        );
-//    }
+    @Test
+    void findAllPlannings() {
+        service.save("123", new Planning("planning 123"));
+        service.save("456", new Planning("planning 456"));
+        assertThat(service.all()).containsExactlyInAnyOrder(
+            new Planning("planning 123"),
+            new Planning("planning 456")
+        );
+    }
 }
