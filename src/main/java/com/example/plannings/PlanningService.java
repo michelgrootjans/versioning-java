@@ -3,7 +3,6 @@ package com.example.plannings;
 import com.example.versioning.VersionRepository;
 import com.example.versioning.Versions;
 
-import java.util.List;
 import java.util.UUID;
 
 public class PlanningService {
@@ -37,12 +36,5 @@ public class PlanningService {
     public void redo(String planningId) {
         Versions version = versions.find(planningId).orElseThrow();
         versions.save(planningId, version.redo());
-    }
-
-    public List<Planning> all() {
-        return List.of(
-            new Planning("planning 123"),
-            new Planning("planning 456")
-        );
     }
 }
