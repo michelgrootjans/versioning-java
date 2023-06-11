@@ -1,5 +1,7 @@
 package com.example.versioning;
 
+import java.util.UUID;
+
 public class PlanningService {
     private final VersionHub<Planning> hub;
     private final VersionRepository versions;
@@ -17,6 +19,7 @@ public class PlanningService {
     }
 
     public void save(String planningId, Planning planning) {
+        Versions version = versions.find(planningId).orElse(new Versions(UUID.randomUUID().toString()));
         hub.buildRepository("planning-" + planningId).createNewVersion(planning);
     }
 
