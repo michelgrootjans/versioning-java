@@ -15,8 +15,8 @@ public class FileBasedVersionRepository implements VersionRepository {
     }
 
     @Override
-    public String increment(String id) {
-        return null;
+    public Optional<Versions> find(String id) {
+        return getVersions();
     }
 
     @Override

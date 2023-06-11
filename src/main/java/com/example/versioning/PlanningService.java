@@ -11,10 +11,11 @@ public class PlanningService {
         this.plannings = plannings;
     }
 
-    public void save(String id, Planning planning) {
-        var versionHash = versions.increment(id);
-        plannings.save(versionHash, planning);
-        repoOf(id).createNewVersion(planning);
+    public void save(String planningId, Planning planning) {
+        versions.find(planningId)
+            .map(Versions::head)
+            .ifPresent(hash -> plannings.save(hash, planning));
+        repoOf(planningId).createNewVersion(planning);
     }
 
     public Planning find(String planningId) {
