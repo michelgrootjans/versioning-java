@@ -15,6 +15,9 @@ public class Head2 {
     public Head2(List<String> undolist) {
         this.undolist = undolist;
         this.undoStack = new Stack<>();
+        for (String s : undolist) {
+            undoStack.push(s);
+        }
     }
 
     public String currentHead() {
@@ -41,5 +44,6 @@ public class Head2 {
 
     public void redo() {
         undolist.remove(currentHead());
+        undoStack.pop();
     }
 }
