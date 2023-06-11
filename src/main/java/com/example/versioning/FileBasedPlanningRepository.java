@@ -15,6 +15,11 @@ public class FileBasedPlanningRepository implements PlanningRepository {
 
     @Override
     public void save(String id, Planning planning) {
+        try {
+            objectMapper.writeValue(new File(rootDirectory, "%s.json".formatted(id)), planning);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
