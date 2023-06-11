@@ -40,7 +40,9 @@ public class PlanningService {
     }
 
     public List<Planning> all() {
-        return List.of(new Planning("planning 123"),
-            new Planning("planning 456"));
+        return List.of(
+            new Planning("planning 123"),
+            new Planning("planning 456")
+        );
     }
 }
