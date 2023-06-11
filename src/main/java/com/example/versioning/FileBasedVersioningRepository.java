@@ -70,7 +70,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         versionDirectory.mkdirs();
 
         write(new File(versionDirectory, "target.json"), target);
-        write(new File(versionDirectory, "message.json"), new Message(head()));
     }
 
     private Optional<Versions> getVersions() {
