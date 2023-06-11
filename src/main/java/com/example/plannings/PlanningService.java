@@ -37,7 +37,9 @@ public class PlanningService {
     }
 
     public void redo(String planningId) {
-        Versions version = versions.find(planningId).orElseThrow();
-        versions.save(planningId, version.redo());
+        Versions newVersion = versions.find(planningId).orElseThrow().redo();
+        versions.save(planningId, newVersion);
+        Planning planning = plannings.getPlanning(newVersion.head());
+        plannings.save(planningId, planning);
     }
 }
