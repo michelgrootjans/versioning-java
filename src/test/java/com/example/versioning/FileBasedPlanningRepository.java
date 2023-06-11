@@ -37,6 +37,6 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     }
 
     private File planningFile(String id) {
-        return new File(rootDirectory, "%s.json".formatted(id));
+        return new File(rootDirectory, "planning.%s.json".formatted(id));
     }
 }
