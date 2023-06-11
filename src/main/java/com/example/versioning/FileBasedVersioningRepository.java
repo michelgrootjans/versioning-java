@@ -39,7 +39,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     public void redo() {
         String currentVersion = head();
 
-        // new implementation
         var versions = Stream.of(rootDirectory.listFiles())
             .filter(File::isDirectory)
             .map(dir -> {
