@@ -19,6 +19,7 @@ public class PlanningService {
 
     public Planning find(String planningId) {
         var currentVersion = versions.headOf(planningId);
+        plannings.find(currentVersion);
         return repoOf(planningId).currentVersion();
     }
 

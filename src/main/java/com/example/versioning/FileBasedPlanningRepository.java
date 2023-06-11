@@ -10,4 +10,9 @@ public class FileBasedPlanningRepository implements PlanningRepository {
     public void save(String id, Planning planning) {
 
     }
+
+    @Override
+    public Planning find(String id) {
+        return null;
+    }
 }
