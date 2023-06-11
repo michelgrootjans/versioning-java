@@ -5,11 +5,11 @@ import java.util.stream.Stream;
 
 public record Versions(String head, List<Version> versions) {
     public Versions(String rootHash) {
-        this(rootHash, List.of());
+        this(rootHash, List.of(new Version(rootHash, "")));
     }
 
     public Versions add(String versionHash) {
-        return new Versions(versionHash, append(new Version(head)));
+        return new Versions(versionHash, append(new Version(versionHash, head)));
     }
 
     private List<Version> append(Version version) {
