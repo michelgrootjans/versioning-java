@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.example.plannings.Planning;
 import com.example.plannings.PlanningService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -79,7 +78,6 @@ public class PlanningTest {
     }
 
     @Test
-    @Disabled
     void findAllPlannings() {
         service.save("123", new Planning("planning 123"));
         service.save("456", new Planning("planning 456"));
