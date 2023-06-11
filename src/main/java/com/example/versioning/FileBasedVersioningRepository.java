@@ -33,22 +33,12 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public T currentVersion() {
-        // new implementation
-        String head = getVersions().map(Versions::head).orElseThrow();
-        String head1 = head();
-
-        assert head1.equals(head);
-
+        String head = getVersions().orElseThrow().head();
         return readTarget(head);
     }
 
     @Override
     public void undo() {
-        String head = head();
-        addToUndoStack(head);
-        pointHeadTo(parent());
-
-        // new implementation
         Versions add = getVersions()
             .map(Versions::undo)
             .orElseThrow();
