@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 public class FileBasedVersioningRepository<T> implements VersioningRepository<T> {
     private final File rootDirectory;
@@ -47,26 +46,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
 
     @Override
     public void redo() {
-        String currentVersion = head();
-
-        var versions = Stream.of(rootDirectory.listFiles())
-            .filter(File::isDirectory)
-            .map(dir -> {
-                System.out.println(dir.getName());
-                return dir;
-            }).toList();
-        versions.forEach(version -> {
-            try {
-                Message message = objectMapper.readValue(new File(version, "message.json"), Message.class);
-                if (message.parent().equals(currentVersion)) {
-                    pointHeadTo(version.getName());
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        // new implementation
         Versions add = getVersions()
             .map(Versions::redo)
             .orElseThrow();
