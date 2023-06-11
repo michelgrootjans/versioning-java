@@ -100,7 +100,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         write(new File(versionDirectory, "message.json"), new Message(head()));
 
         var versions = getVersions();
-        write(rootFile("versions.json"), versions);
+        write(rootFile("versions.json"), versions.add(versionHash));
     }
 
     private Versions getVersions() {
