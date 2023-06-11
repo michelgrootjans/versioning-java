@@ -10,4 +10,9 @@ public class FileBasedVersionRepository implements VersionRepository {
     public String increment(String id) {
         return null;
     }
+
+    @Override
+    public String headOf(String id) {
+        return null;
+    }
 }
