@@ -12,7 +12,7 @@ public class PlanningService {
     }
 
     public void save(String id, Planning planning) {
-        var versionHash = versions.increment();
+        var versionHash = versions.increment(id);
         plannings.save(versionHash, planning);
         repoOf(id).createNewVersion(planning);
     }

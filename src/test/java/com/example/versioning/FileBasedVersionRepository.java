@@ -7,7 +7,7 @@ public class FileBasedVersionRepository implements VersionRepository {
     }
 
     @Override
-    public String increment() {
+    public String increment(String id) {
         return null;
     }
 }
