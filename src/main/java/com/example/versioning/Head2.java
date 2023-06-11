@@ -2,9 +2,11 @@ package com.example.versioning;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Head2 {
     private final List<String> undolist;
+    private final Stack<String> undoStack;
 
     public Head2() {
         this(new ArrayList<>());
@@ -12,6 +14,7 @@ public class Head2 {
 
     public Head2(List<String> undolist) {
         this.undolist = undolist;
+        this.undoStack = new Stack<String>();
     }
 
     public String currentHead() {
@@ -30,5 +33,9 @@ public class Head2 {
 
     public void undo(String parent) {
         undolist.add(parent);
+    }
+
+    public void redo() {
+        undolist.remove(currentHead());
     }
 }

@@ -53,6 +53,11 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         String hash = undoStack.pop();
         write(new File(rootDirectory, "undo.json"), undoStack);
         pointHeadTo(hash);
+
+        // new impl
+        Head2 head = readHead();
+        head.redo();
+        save(head);
     }
 
     private String head() {
