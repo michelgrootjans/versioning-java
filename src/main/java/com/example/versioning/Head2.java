@@ -29,6 +29,6 @@ public class Head2 {
     }
 
     public void undo(String parent) {
-
+        undolist.add(parent);
     }
 }
