@@ -16,21 +16,20 @@ public class FileBasedVersionRepository implements VersionRepository {
 
     @Override
     public Optional<Versions> find(String id) {
-        return getVersions();
+        try {
+            Versions result = objectMapper.readValue(new File(rootDirectory, "versions.json"), Versions.class);
+            return Optional.ofNullable(result);
+        } catch (IOException e) {
+            return Optional.empty();
+        }
     }
 
-    private Optional<Versions> getVersions() {
+    @Override
+    public void save(String planningId, Versions version) {
         try {
-            Versions result;
-            try {
-                result = objectMapper.readValue(new File(rootDirectory, "versions.json"), Versions.class);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            Versions versions = result;
-            return Optional.ofNullable(versions);
-        } catch (RuntimeException e) {
-            return Optional.empty();
+            objectMapper.writeValue(new File(rootDirectory, "versions.json"), version);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
