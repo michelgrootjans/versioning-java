@@ -17,7 +17,7 @@ public class PlanningService {
     }
 
     public void save(String planningId, Planning planning) {
-        repoOf(planningId).createNewVersion(planning);
+        hub.buildRepository("planning-" + planningId).createNewVersion(planning);
     }
 
     public void undo(String planningId) {
@@ -28,9 +28,5 @@ public class PlanningService {
     public void redo(String planningId) {
         Versions version = versions.find(planningId).orElseThrow();
         versions.save(planningId, version.redo());
-    }
-
-    private VersioningRepository<Planning> repoOf(String planningId) {
-        return hub.buildRepository("planning-" + planningId);
     }
 }
