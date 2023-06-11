@@ -13,6 +13,6 @@ public class FileBasedVersionHub<T> implements VersionHub<T> {
 
     @Override
     public VersioningRepository<T> buildRepository(String repositoryId) {
-        return new FileBasedVersioningRepository<>(new File(rootDirectory, repositoryId), targetType);
+        return new FileBasedVersioningRepository<>(rootDirectory, targetType);
     }
 }

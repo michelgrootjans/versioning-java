@@ -60,7 +60,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     }
 
     private void createNewVersion(String versionHash, T target) {
-        File versionDirectory = directoryOf(versionHash);
+        File versionDirectory = new File(rootDirectory, versionHash);
         versionDirectory.mkdirs();
 
         write(new File(rootDirectory, versionHash + ".json"), target);
@@ -73,10 +73,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         } catch (RuntimeException e) {
             return Optional.empty();
         }
-    }
-
-    private File directoryOf(String versionHash) {
-        return new File(rootDirectory, versionHash);
     }
 
     private <T> T readFile(File file, Class<T> valueType) {
