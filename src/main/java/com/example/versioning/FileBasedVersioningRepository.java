@@ -21,7 +21,6 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     public void createNewVersion(T target) {
         String newHash = UUID.randomUUID().toString();
         createNewVersion(newHash, target);
-        pointHeadTo(newHash);
 
         // new implementation
         Versions add = getVersions()
