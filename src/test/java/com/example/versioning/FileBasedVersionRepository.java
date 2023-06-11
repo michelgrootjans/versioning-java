@@ -12,6 +12,7 @@ public class FileBasedVersionRepository implements VersionRepository {
 
     public FileBasedVersionRepository(File rootDirectory) {
         this.rootDirectory = rootDirectory;
+        rootDirectory.mkdirs();
     }
 
     @Override

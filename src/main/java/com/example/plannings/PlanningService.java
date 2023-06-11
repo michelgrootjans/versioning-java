@@ -15,10 +15,10 @@ public class PlanningService {
     }
 
     public void save(String planningId, Planning planning) {
-        String newHash = UUID.randomUUID().toString();
+        String newHead = UUID.randomUUID().toString();
         Versions version = this.versions.find(planningId)
-            .map(v -> v.push(newHash))
-            .orElse(new Versions(newHash));
+            .map(v -> v.push(newHead))
+            .orElse(new Versions(newHead));
         this.versions.save(planningId, version);
         plannings.save(version.head(), planning);
     }

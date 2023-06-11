@@ -22,7 +22,7 @@ public class PlanningTest {
     @BeforeEach
     void setUp() {
         service = new PlanningService(
-            new FileBasedVersionRepository(tempDir),
+            new FileBasedVersionRepository(new File(tempDir, "versions")),
             new FileBasedPlanningRepository(tempDir)
         );
     }

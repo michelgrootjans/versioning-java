@@ -13,6 +13,7 @@ public class FileBasedPlanningRepository implements PlanningRepository {
 
     public FileBasedPlanningRepository(File rootDirectory) {
         this.rootDirectory = rootDirectory;
+        rootDirectory.mkdirs();
     }
 
     @Override
