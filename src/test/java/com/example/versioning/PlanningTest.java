@@ -2,7 +2,6 @@ package com.example.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.example.plannings.Order;
 import com.example.plannings.Planning;
 import com.example.plannings.PlanningService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.util.List;
 
 public class PlanningTest {
     @TempDir
@@ -33,15 +31,9 @@ public class PlanningTest {
     }
 
     @Test
-    void savePlanningWithAnOrder() {
-        service.save("123", new Planning("planning v1", List.of(new Order("laptop"))));
-        assertThat(service.find("123")).isEqualTo(new Planning("planning v1", List.of(new Order("laptop"))));
-    }
-
-    @Test
     void undo() {
         service.save("123", new Planning("planning v1"));
-        service.save("123", new Planning("planning v2", List.of(new Order("laptop"))));
+        service.save("123", new Planning("planning v2"));
         service.undo("123");
         assertThat(service.find("123")).isEqualTo(new Planning("planning v1"));
     }
@@ -49,8 +41,8 @@ public class PlanningTest {
     @Test
     void undoTwice() {
         service.save("123", new Planning("planning v1"));
-        service.save("123", new Planning("planning v2", List.of(new Order("laptop"))));
-        service.save("123", new Planning("planning v3", List.of(new Order("laptop bag"))));
+        service.save("123", new Planning("planning v2"));
+        service.save("123", new Planning("planning v3"));
         service.undo("123");
         service.undo("123");
         assertThat(service.find("123")).isEqualTo(new Planning("planning v1"));
@@ -59,10 +51,10 @@ public class PlanningTest {
     @Test
     void redo() {
         service.save("123", new Planning("planning v1"));
-        service.save("123", new Planning("planning v1", List.of(new Order("laptop"))));
+        service.save("123", new Planning("planning v1"));
         service.undo("123");
         service.redo("123");
-        assertThat(service.find("123")).isEqualTo(new Planning("planning v1", List.of(new Order("laptop"))));
+        assertThat(service.find("123")).isEqualTo(new Planning("planning v1"));
     }
 
     @Test
