@@ -53,7 +53,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
     private T readTarget(String hash) {
         try {
             File versionDirectory = new File(rootDirectory, hash);
-            File targetFile = new File(versionDirectory, hash + ".json");
+            File targetFile = new File(rootDirectory, hash + ".json");
             return objectMapper.readValue(targetFile, targetType);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -64,7 +64,7 @@ public class FileBasedVersioningRepository<T> implements VersioningRepository<T>
         File versionDirectory = directoryOf(versionHash);
         versionDirectory.mkdirs();
 
-        write(new File(versionDirectory, versionHash + ".json"), target);
+        write(new File(rootDirectory, versionHash + ".json"), target);
     }
 
     private Optional<Versions> getVersions() {
