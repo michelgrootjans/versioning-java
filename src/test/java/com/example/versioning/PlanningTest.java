@@ -26,54 +26,54 @@ public class PlanningTest {
 
     @Test
     void savePlanning() {
-        service.save("123", new Planning("planning v1"));
-        assertThat(service.find("123")).isEqualTo(new Planning("planning v1"));
+        service.save("123", new Planning("v1"));
+        assertThat(service.find("123")).isEqualTo(new Planning("v1"));
     }
 
     @Test
     void savePlanningTwice() {
-        service.save("123", new Planning("planning v1"));
-        service.save("123", new Planning("planning v2"));
-        assertThat(service.find("123")).isEqualTo(new Planning("planning v2"));
+        service.save("123", new Planning("v1"));
+        service.save("123", new Planning("v2"));
+        assertThat(service.find("123")).isEqualTo(new Planning("v2"));
     }
 
     @Test
     void undo() {
-        service.save("123", new Planning("planning v1"));
-        service.save("123", new Planning("planning v2"));
+        service.save("123", new Planning("v1"));
+        service.save("123", new Planning("v2"));
         service.undo("123");
-        assertThat(service.find("123")).isEqualTo(new Planning("planning v1"));
+        assertThat(service.find("123")).isEqualTo(new Planning("v1"));
     }
 
     @Test
     void undoTwice() {
-        service.save("123", new Planning("planning v1"));
-        service.save("123", new Planning("planning v2"));
-        service.save("123", new Planning("planning v3"));
+        service.save("123", new Planning("v1"));
+        service.save("123", new Planning("v2"));
+        service.save("123", new Planning("v3"));
         service.undo("123");
         service.undo("123");
-        assertThat(service.find("123")).isEqualTo(new Planning("planning v1"));
+        assertThat(service.find("123")).isEqualTo(new Planning("v1"));
     }
 
     @Test
     void redo() {
-        service.save("123", new Planning("planning v1"));
-        service.save("123", new Planning("planning v2"));
+        service.save("123", new Planning("v1"));
+        service.save("123", new Planning("v2"));
         service.undo("123");
         service.redo("123");
-        assertThat(service.find("123")).isEqualTo(new Planning("planning v2"));
+        assertThat(service.find("123")).isEqualTo(new Planning("v2"));
     }
 
     @Test
     void redoTwice() {
-        service.save("123", new Planning("planning v1"));
-        service.save("123", new Planning("planning v2"));
-        service.save("123", new Planning("planning v3"));
+        service.save("123", new Planning("v1"));
+        service.save("123", new Planning("v2"));
+        service.save("123", new Planning("v3"));
         service.undo("123");
         service.undo("123");
         service.redo("123");
         service.redo("123");
-        assertThat(service.find("123")).isEqualTo(new Planning("planning v3"));
+        assertThat(service.find("123")).isEqualTo(new Planning("v3"));
     }
 
     @Test
