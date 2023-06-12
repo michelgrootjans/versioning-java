@@ -20,7 +20,6 @@ public class PlanningTest {
     void setUp() {
         service = new PlanningService(
             new FileBasedVersionRepository(new File(tempDir, "versions")),
-            new FileBasedPlanningRepository(new File(tempDir, "latest-plannings")),
             new FileBasedPlanningRepository(new File(tempDir, "plannings"))
         );
     }
@@ -83,16 +82,5 @@ public class PlanningTest {
         service.save("456", new Planning("planning 456"));
         assertThat(service.find("123")).isEqualTo(new Planning("planning 123"));
         assertThat(service.find("456")).isEqualTo(new Planning("planning 456"));
-    }
-
-
-    @Test
-    void findAllPlannings() {
-        service.save("123", new Planning("planning 123"));
-        service.save("456", new Planning("planning 456"));
-        assertThat(service.all()).containsExactlyInAnyOrder(
-            new Planning("planning 123"),
-            new Planning("planning 456")
-        );
     }
 }
