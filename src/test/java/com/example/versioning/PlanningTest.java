@@ -32,6 +32,13 @@ public class PlanningTest {
     }
 
     @Test
+    void savePlanningTwice() {
+        service.save("123", new Planning("planning v1"));
+        service.save("123", new Planning("planning v2"));
+        assertThat(service.find("123")).isEqualTo(new Planning("planning v2"));
+    }
+
+    @Test
     void undo() {
         service.save("123", new Planning("planning v1"));
         service.save("123", new Planning("planning v2"));
